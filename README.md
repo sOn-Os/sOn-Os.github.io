@@ -10,6 +10,8 @@
 
 The website of [sOnOs](https://github.com/aOnurTheDev/sOnOs), an Arch Linux-based operating system for developers and gamers.
 
+**Live at <https://son-os.github.io>**
+
 The whole site is one file, `index.html`, with its CSS and JavaScript inline. There is no build step and nothing to install.
 
 ## Viewing it locally
@@ -71,14 +73,16 @@ Three animations follow the scroll:
 
 All content is readable before any of it moves. Visitors who have reduced motion turned on in their system settings see a still page.
 
-## Publishing on GitHub Pages
+## Publishing
 
-1. Put `index.html` at the root of a repository, or in a `docs/` folder.
-2. In the repository, open **Settings → Pages**.
-3. Under **Build and deployment**, choose **Deploy from a branch**, then the branch and the folder.
+GitHub Pages serves the site from the root of the `main` branch. Every push to `main` updates <https://son-os.github.io>, usually within a minute or two. Pages publishes `index.html` as it is.
 
-The site has no build step, so GitHub publishes the file as it is.
+The address comes from the repository's name: `sOn-Os.github.io` is the user site of the `sOn-Os` account. Renaming the repository moves the site to `https://son-os.github.io/<new-name>/`.
 
 ## Contributing
 
 Bug reports and pull requests are welcome. Before you open a pull request, check the page at phone width (about 400 px) and in both languages.
+
+## License
+
+Distributed under the GPL-3.0 License. See [LICENSE](LICENSE).
