@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>sOnOs</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="sOnOs: geliştiriciler ve oyuncular için Arch Linux tabanlı işletim sistemi. Dokuz soruda kurulur.">
+<meta name="theme-color" content="#0B0909">
+<meta property="og:title" content="sOnOs">
+<meta property="og:description" content="Saf Arch Linux. Dokuz soruda kurulu.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230B0909'/%3E%3Cpath d='M13 6h10l-4 20H9z' fill='%23E53935'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Archivo:ital,wdth,wght@0,62..125,400..800;1,62..125,400..800&amp;family=Martian+Mono:wdth,wght@75..112.5,300..700&amp;display=swap">
+<style>
+/* Layout: racing-poster scale wordmark on black; everything leans 12° like the logo;
+   tiny precise mono terminals as the counterweight. Bands run black → red → black → white → black. */
+:root {
+  color-scheme: dark;
+  --ink: #0B0909;        /* page black, faint red bias */
+  --coal: #151112;       /* raised surfaces: terminal, code */
+  --line: #2E2627;       /* hairlines on black */
+  --smoke: #A79C9D;      /* secondary text on black */
+  --white: #FFFFFF;      /* logo white */
+  --red: #E53935;        /* logo red */
+  --red-dim: #4A1513;    /* the "On" before it powers up */
+
+  --display: "Anton", Impact, "Arial Narrow Bold", "Liberation Sans Narrow", sans-serif;
+  --body: "Archivo", ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+  --mono: "Martian Mono", ui-monospace, "DejaVu Sans Mono", Menlo, Consolas, monospace;
+
+  --slant: -12deg;       /* measured from the stems of the sOnOs wordmark */
+  --gutter: max(clamp(16px, 4vw, 48px), env(safe-area-inset-left, 0px));
+  --gutter-r: max(clamp(16px, 4vw, 48px), env(safe-area-inset-right, 0px));
+
+  --t-xs: 0.75rem;
+  --t-sm: 0.875rem;
+  --t-md: 1.0625rem;
+  --t-lg: clamp(1.375rem, 1.1rem + 1vw, 1.75rem);
+  --t-xl: clamp(2.25rem, 1.4rem + 3.6vw, 4.5rem);
+  --t-2xl: clamp(2.75rem, 1.6rem + 5vw, 6rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: clip; }
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--white);
+  font-family: var(--body);
+  font-size: var(--t-md);
+  line-height: 1.6;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 30; background: var(--ink);
+}
+a { color: inherit; }
+code, kbd { font-family: var(--mono); font-size: 0.86em; font-stretch: 87.5%; }
+p code { color: var(--white); background: var(--coal); border: 1px solid var(--line); padding: 0.05em 0.35em; }
+:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+::selection { background: var(--red); color: var(--ink); }
+
+.wrap {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter-r);
+}
+
+/* ---------- type ---------- */
+.display {
+  font-family: var(--display);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: 0.005em;
+  text-wrap: balance;
+  margin: 0;
+  transform: skewX(var(--slant));
+  transform-origin: 0 100%;
+}
+.eyebrow {
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  font-stretch: 87.5%;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--red);
+  margin: 0;
+  display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+}
+.lede { color: var(--smoke); max-width: 62ch; margin: 0; }
+.lede strong { color: var(--white); font-weight: 600; }
+
+/* ---------- header ---------- */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: color-mix(in srgb, var(--ink) 90%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.top .wrap { display: flex; align-items: center; gap: 1.5rem; padding-block: 0.7rem; }
+.top-mark { display: block; height: 26px; width: auto; }
+.top nav { display: flex; gap: 1.4rem; margin-left: auto; }
+.top nav a {
+  text-decoration: none; font-size: var(--t-sm); font-weight: 500; color: var(--smoke);
+  font-stretch: 87.5%;
+}
+.top nav a:hover { color: var(--white); }
+.lang { display: flex; border: 1px solid var(--line); }
+.lang button {
+  font: 500 var(--t-xs)/1 var(--mono); letter-spacing: 0.06em;
+  background: none; border: 0; color: var(--smoke); padding: 0.5rem 0.6rem; cursor: pointer;
+}
+.lang button[aria-pressed="true"] { background: var(--white); color: var(--ink); }
+
+/* ---------- buttons: parallelograms, same lean as the logo ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  text-decoration: none; font-weight: 700; font-size: var(--t-sm);
+  letter-spacing: 0.02em; padding: 0.8rem 1.4rem;
+  transform: skewX(var(--slant));
+  border: 2px solid var(--red);
+  background: var(--red); color: var(--ink);
+  transition: background .15s, color .15s, border-color .15s;
+}
+.btn > span { display: inline-block; transform: skewX(12deg); }
+.btn:hover { background: var(--white); border-color: var(--white); }
+.btn.ghost { background: transparent; color: var(--white); border-color: var(--white); }
+.btn.ghost:hover { background: var(--white); color: var(--ink); }
+.btn.small { padding: 0.5rem 0.9rem; font-size: var(--t-xs); }
+
+/* ---------- hero ---------- */
+.hero { padding-block: clamp(1.5rem, 4vw, 3rem) clamp(3rem, 6vw, 5rem); }
+.mark { display: block; width: 100%; height: auto; max-width: 100%; }
+
+
+.on-group { animation: power 1.4s steps(1, end) 0.35s both; }
+@keyframes power {
+  0%   { opacity: 0.18; filter: none; }
+  14%  { opacity: 1; }
+  20%  { opacity: 0.25; }
+  30%  { opacity: 1; }
+  36%  { opacity: 0.55; }
+  44%  { opacity: 1; filter: drop-shadow(0 0 1.2px rgba(229, 57, 53, .9)); }
+  100% { opacity: 1; filter: drop-shadow(0 0 1.2px rgba(229, 57, 53, .55)); }
+}
+.hero-row {
+  display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 4rem); align-items: end;
+  margin-top: clamp(1.25rem, 3vw, 2.5rem);
+}
+.hero h1 { font-size: var(--t-xl); }
+.hero h1 em { font-style: normal; color: var(--red); }
+.hero-side { display: grid; gap: 1.5rem; }
+.ctas { display: flex; flex-wrap: wrap; gap: 1rem 1.25rem; padding-left: 0.5rem; }
+.meta {
+  display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem;
+  margin: clamp(2rem, 4vw, 3rem) 0 0; padding: 1rem 0 0; list-style: none;
+  border-top: 1px solid var(--line);
+  font: 400 var(--t-xs)/1.4 var(--mono); font-stretch: 87.5%;
+  color: var(--smoke); letter-spacing: 0.04em;
+}
+.meta b { color: var(--white); font-weight: 600; }
+.meta .beta b { color: var(--red); }
+
+/* ---------- console section ---------- */
+.console { padding-block: clamp(3rem, 7vw, 6rem); border-top: 1px solid var(--line); }
+.console .wrap {
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem); align-items: center;
+}
+.console-text { display: grid; gap: 1.25rem; }
+.console h2 { font-size: var(--t-xl); }
+.term {
+  background: var(--coal); border: 1px solid var(--line);
+  font-family: var(--mono); font-stretch: 75%; font-weight: 400;
+  font-size: clamp(0.62rem, 0.45rem + 0.5vw, 0.8rem); line-height: 1.5;
+  min-width: 0;
+}
+.term-bar {
+  display: flex; justify-content: space-between; gap: 1rem;
+  padding: 0.55rem 1rem; border-bottom: 1px solid var(--line);
+  color: var(--smoke); font-size: var(--t-xs); letter-spacing: 0.04em;
+}
+.term-bar span:last-child { color: var(--red); }
+.term pre { margin: 0; padding: 1.1rem 1.2rem 1.3rem; overflow-x: auto; color: #D9D2D2; font: inherit; }
+.term .r { color: var(--red); }
+.term .k { color: var(--red); }
+.term .p { color: var(--smoke); }
+.term .b { color: var(--white); font-weight: 600; }
+.cursor { display: inline-block; width: 0.6em; height: 1.1em; vertical-align: -0.2em; background: var(--white); animation: blink 1.1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ---------- red band: the nine questions ---------- */
+.band-red { background: var(--red); color: var(--ink); padding-block: clamp(3rem, 7vw, 6rem); }
+.band-red .eyebrow { color: var(--ink); }
+.ticks { display: inline-flex; gap: 5px; }
+.ticks i { width: 18px; height: 9px; background: var(--ink); transform: skewX(var(--slant)); }
+.q-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1.5rem 3rem; margin-bottom: clamp(2rem, 4vw, 3.5rem); }
+.q-head .display { font-size: var(--t-2xl); }
+.q-head p { max-width: 38ch; margin: 0; font-weight: 500; }
+.questions {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 2px solid var(--ink);
+}
+.questions li {
+  position: relative;
+  display: grid; grid-template-columns: auto 1fr; gap: 0.25rem 1.1rem; align-content: start;
+  padding: 1.5rem 1.5rem 1.75rem 1.75rem;
+  border-bottom: 2px solid var(--ink);
+}
+.questions li:nth-child(3n+2)::before,
+.questions li:nth-child(3n+3)::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: 0;
+  border-left: 2px solid var(--ink);
+  transform: skewX(var(--slant)); transform-origin: 0 100%;
+}
+.questions .n {
+  grid-row: span 2;
+  font: 400 clamp(3rem, 2rem + 3vw, 4.75rem)/0.85 var(--display);
+  color: var(--white);
+  transform: skewX(var(--slant));
+  min-width: 1.1ch;
+}
+.questions h3 { font: 400 var(--t-lg)/1.05 var(--display); margin: 0.15rem 0 0; transform: skewX(var(--slant)); transform-origin: 0 100%; }
+.questions p { margin: 0; font-size: 0.95rem; line-height: 1.45; font-weight: 500; }
+.questions code { background: rgba(11, 9, 9, .12); padding: 0 0.3em; }
+.defaults { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.6rem; margin-top: 2rem; }
+.defaults p { margin: 0 0.5rem 0 0; font-weight: 600; }
+.defaults span { font: 500 var(--t-xs)/1 var(--mono); font-stretch: 87.5%; border: 1.5px solid var(--ink); padding: 0.45rem 0.6rem; }
+
+/* ---------- every install ---------- */
+.inside { padding-block: clamp(3.5rem, 8vw, 7rem); }
+.inside .wrap { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr); gap: clamp(2rem, 5vw, 5rem); }
+.inside-head { display: grid; gap: 1.25rem; align-content: start; }
+.inside h2 { font-size: var(--t-xl); }
+.sizes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+.size { border-top: 1px solid var(--line); padding-top: 0.9rem; }
+.size b { display: block; font: 400 clamp(2.5rem, 1.8rem + 2.5vw, 3.75rem)/1 var(--display); transform: skewX(var(--slant)); transform-origin: 0 100%; font-variant-numeric: tabular-nums; }
+.size b small { font-size: 0.45em; color: var(--smoke); margin-left: 0.15em; }
+.size:last-child b { color: var(--red); }
+.size span { display: block; margin-top: 0.4rem; color: var(--smoke); font-size: var(--t-sm); line-height: 1.4; }
+.groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); }
+.group { padding: 1.5rem 1.5rem 1.75rem 0; border-bottom: 1px solid var(--line); display: grid; gap: 0.6rem; align-content: start; }
+.group:nth-child(even) { padding-left: 1.5rem; padding-right: 0; border-left: 1px solid var(--line); }
+.group h3 { margin: 0; font: 500 var(--t-xs)/1.2 var(--mono); font-stretch: 87.5%; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red); }
+.group p { margin: 0; color: var(--smoke); font-size: 0.98rem; line-height: 1.55; }
+.group p strong { color: var(--white); font-weight: 600; }
+
+/* ---------- white band: the language wall ---------- */
+.band-white { background: var(--white); color: var(--ink); padding-block: clamp(3.5rem, 8vw, 7rem); }
+.band-white .eyebrow { color: var(--red); }
+.dev-head { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 1.5rem 4rem; align-items: end; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+.dev-head .display { font-size: var(--t-xl); }
+.dev-head p { margin: 0; max-width: 52ch; color: #3B3334; }
+.wall { list-style: none; margin: 0; padding: 0 0 0 0.5rem; display: flex; flex-wrap: wrap; gap: 0.1em 0.42em; font: 400 clamp(1.9rem, 1rem + 3.6vw, 4.25rem)/1.08 var(--display); }
+.wall li { transform: skewX(var(--slant)); }
+.wall li:nth-child(3n+2) { color: transparent; -webkit-text-stroke: 1.5px var(--ink); }
+.wall li:nth-child(7n+4) { color: var(--red); -webkit-text-stroke: 0; }
+.wall-foot { margin-top: clamp(1.5rem, 3vw, 2.5rem); display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; font: 400 var(--t-xs)/1.5 var(--mono); font-stretch: 87.5%; color: #3B3334; }
+.wall-foot b { color: var(--ink); font-weight: 600; }
+
+/* ---------- live ISO / rescue ---------- */
+.rescue { padding-block: clamp(3.5rem, 8vw, 7rem); }
+.rescue-head { display: grid; gap: 1.25rem; margin-bottom: clamp(2rem, 4vw, 3rem); max-width: 60rem; }
+.rescue h2 { font-size: var(--t-xl); }
+.pkgs { margin: 0; border-top: 1px solid var(--line); }
+.pkgs > div { display: grid; grid-template-columns: minmax(10rem, 14rem) minmax(0, 1fr); gap: 0.5rem 2rem; padding-block: 1rem; border-bottom: 1px solid var(--line); }
+.pkgs dt { font-weight: 600; font-stretch: 87.5%; }
+.pkgs dd { margin: 0; display: flex; flex-wrap: wrap; gap: 0.35rem 1.1rem; font: 400 var(--t-sm)/1.5 var(--mono); font-stretch: 75%; color: var(--smoke); }
+.pkgs dd span::before { content: "▸ "; color: var(--red); }
+
+/* ---------- install steps ---------- */
+.install { padding-block: clamp(3.5rem, 8vw, 7rem); border-top: 1px solid var(--line); }
+.install-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1.5rem 3rem; margin-bottom: clamp(2rem, 4vw, 3.5rem); }
+.install-head > div { display: grid; gap: 1.25rem; }
+.install h2 { font-size: var(--t-2xl); }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 4vw, 3rem) clamp(2rem, 5vw, 4rem); }
+.steps li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.4rem 1.25rem; align-content: start; }
+.steps .n { grid-row: span 3; font: 400 clamp(2.75rem, 2rem + 2vw, 4rem)/0.9 var(--display); color: var(--red); transform: skewX(var(--slant)); min-width: 1.1ch; }
+.steps h3 { margin: 0; font: 400 var(--t-lg)/1.1 var(--display); transform: skewX(var(--slant)); transform-origin: 0 100%; }
+.steps p { margin: 0; color: var(--smoke); }
+.steps p + p { margin-top: 0.25rem; }
+.warn { border-left: 3px solid var(--red); padding-left: 0.8rem; color: var(--white) !important; font-size: 0.95rem; }
+.cmd {
+  display: flex; align-items: stretch; margin-top: 0.6rem;
+  background: var(--coal); border: 1px solid var(--line); min-width: 0;
+}
+.cmd code { flex: 1; min-width: 0; overflow-x: auto; white-space: pre; padding: 0.8rem 1rem; font-size: 0.8rem; font-stretch: 75%; color: var(--white); }
+.cmd code::before { content: "$ "; color: var(--red); }
+.copy {
+  flex: none; border: 0; border-left: 1px solid var(--line); background: none; color: var(--smoke);
+  font: 500 var(--t-xs)/1 var(--mono); font-stretch: 87.5%; padding: 0 0.9rem; cursor: pointer; min-width: 6.5rem;
+}
+.copy:hover { color: var(--white); background: #1d1718; }
+.copy.done { color: var(--ink); background: var(--red); }
+
+/* ---------- build & contribute ---------- */
+.build { padding-block: clamp(3rem, 7vw, 6rem); border-top: 1px solid var(--line); }
+.build .wrap { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2.5rem, 5vw, 5rem); }
+.build-col { display: grid; gap: 1rem; align-content: start; }
+.build h2 { font-size: clamp(2rem, 1.4rem + 2vw, 3rem); }
+.build p { margin: 0; color: var(--smoke); max-width: 60ch; }
+.links { display: flex; flex-wrap: wrap; gap: 1rem 1.25rem; margin-top: 0.5rem; padding-left: 0.5rem; }
+
+/* ---------- footer ---------- */
+.foot { border-top: 1px solid var(--line); padding-block: 2.5rem 3rem; }
+.foot .wrap { display: grid; grid-template-columns: auto 1fr; gap: 1.5rem 3rem; align-items: center; }
+.foot .mark { width: 140px; }
+.foot p { margin: 0; color: var(--smoke); font: 400 var(--t-xs)/1.7 var(--mono); font-stretch: 87.5%; }
+.foot p a { color: var(--white); }
+
+/* ---------- scroll motion (only with JS and when motion is allowed) ---------- */
+.js-motion .hero .mark { will-change: transform; }
+.js-motion .questions .n { transition: color .35s ease, -webkit-text-stroke-color .35s ease; }
+.js-motion .questions li:not(.done) .n { color: transparent; -webkit-text-stroke: 1.5px var(--ink); }
+.js-motion .ticks i { background: transparent; box-shadow: inset 0 0 0 1.5px var(--ink); transition: background .3s ease; }
+.js-motion .ticks i.done { background: var(--ink); }
+.js-motion .wall li { color: transparent; -webkit-text-stroke: 1.5px var(--ink); transition: color .3s ease; }
+.js-motion .wall li:nth-child(7n+4) { -webkit-text-stroke-color: var(--red); }
+.js-motion .wall li.in { color: var(--ink); }
+.js-motion .wall li.in:nth-child(7n+4) { color: var(--red); }
+.wall-status { color: var(--red); font-variant-numeric: tabular-nums; min-width: 22ch; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1000px) {
+  .top nav { display: none; }
+  .lang { margin-left: auto; }
+  .console .wrap, .inside .wrap, .dev-head, .build .wrap { grid-template-columns: minmax(0, 1fr); }
+  .questions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .questions li::before { display: none; }
+  .questions li:nth-child(even)::before { display: block; content: ""; position: absolute; top: 0; bottom: 0; left: 0; border-left: 2px solid var(--ink); transform: skewX(var(--slant)); transform-origin: 0 100%; }
+  .questions li:last-child { grid-column: 1 / -1; }
+}
+@media (max-width: 760px) {
+  .hero-row { grid-template-columns: minmax(0, 1fr); }
+  .steps { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .top .wrap { gap: 0.75rem; }
+  .top .btn { display: none; }
+  .questions { grid-template-columns: minmax(0, 1fr); }
+  .questions li { padding-left: 0.25rem; padding-right: 0.25rem; }
+  .questions li::before, .questions li:nth-child(even)::before { display: none; }
+  .groups { grid-template-columns: minmax(0, 1fr); }
+  .group, .group:nth-child(even) { padding-left: 0; padding-right: 0; border-left: 0; }
+  .pkgs > div { grid-template-columns: minmax(0, 1fr); }
+  .foot .wrap { grid-template-columns: minmax(0, 1fr); }
+  .copy { min-width: 5.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .on-group, .cursor { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#top" aria-label="sOnOs">
+      <svg class="mark top-mark" viewBox="74 26 186 68" aria-hidden="true"><use href="#wordmark"></use></svg>
+    </a>
+    <nav aria-label="Bölümler">
+      <a href="#sorular" data-i18n="nav1">Kurulum</a>
+      <a href="#icerik" data-i18n="nav2">Neler gelir</a>
+      <a href="#kurtarma" data-i18n="nav3">Canlı ISO</a>
+      <a href="#indir" data-i18n="nav4">İndir</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Dil / Language">
+      <button type="button" id="lang-tr" data-lang="tr" aria-pressed="true">TR</button>
+      <button type="button" id="lang-en" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a class="btn small" href="https://github.com/aOnurTheDev/sOnOs/releases"><span data-i18n="dl">ISO'yu indir</span></a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <h1 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">sOnOs</h1>
+    <svg class="mark" viewBox="74 26 186 68" role="img" aria-label="sOnOs">
+      <defs>
+        <g id="wordmark">
+          <path fill="#FFFFFF" d="M89.72614005906061 91.5Q74.11676505906061 91.5 77.47947628860588 75.6796875L78.36872659153008 71.49609375H91.02497659153008L89.70978286619682 77.68359375Q89.32867559351502 79.4765625 89.81509253649988 80.49609375Q90.30150947948474 81.515625 91.84838447948474 81.515625Q94.59057197948474 81.515625 95.46487689916651 77.40234375Q96.19720067804526 73.95703125 95.11821997167402 72.251953125Q94.0392392653028 70.546875 92.30129163825733 68.96484375L86.68493355657544 63.796875Q84.04395947006026 61.3359375 82.97448566651477 58.59375Q81.90501186296929 55.8515625 82.94371599831771 50.96484375Q83.90769321745404 46.4296875 86.69750868863582 43.4765625Q89.4873241598176 40.5234375 93.36206389128728 39.08203125Q97.23680362275695 37.640625 101.38524112275695 37.640625Q116.71336612275695 37.640625 113.46274526752987 52.93359375L113.25350990213593 53.91796875H100.24569740213593L100.67164082454501 51.9140625Q101.00791194749954 50.33203125 100.77684312059043 48.85546875Q100.54577429368132 47.37890625 98.96374304368132 47.37890625Q96.29186804368132 47.37890625 95.69405271398438 50.19140625Q95.08876469266623 53.0390625 96.99502087809049 54.65625L103.5891323354542 60.3515625Q106.68493046386331 62.98828125 108.3937588518785 66.609375Q110.1025872398937 70.23046875 108.8247569726665 76.2421875Q107.24054634896962 83.6953125 102.17474945401511 87.59765625Q97.10895255906061 91.5 89.72614005906061 91.5Z"/>
+          <g class="on-group">
+            <path fill="#E53935" stroke="#E53935" stroke-width="1.8" stroke-linejoin="round" d="M124.42535880906061 91.5Q117.00739005906061 91.5 114.04023636576511 87.017578125Q111.0730826724696 82.53515625 112.87400135318163 74.0625L119.12117154851461 44.671875Q120.80999985490847 36.7265625 125.56907039959023 32.61328125Q130.328140944272 28.5 137.816422194272 28.5Q145.304703444272 28.5 148.31516414959026 32.61328125Q151.32562485490848 36.7265625 149.6367965485146 44.671875L143.38962635318163 74.0625Q141.5887076724696 82.53515625 136.7160176157651 87.017578125Q131.8433275590606 91.5 124.42535880906061 91.5ZM126.9519796443332 80.109375Q129.76447964433322 80.109375 130.92274684562102 74.66015625L137.34178894824188 44.4609375Q138.3132388589994 39.890625 135.5710513589994 39.890625Q132.4773013589994 39.890625 131.48343337337826 44.56640625L125.0718639623786 74.73046875Q124.45910324943924 77.61328125 124.89694769688623 78.861328125Q125.3347921443332 80.109375 126.9519796443332 80.109375Z"/>
+            <path fill="#E53935" stroke="#E53935" stroke-width="1.8" stroke-linejoin="round" d="M144.583984375 90.9375 155.79302180681756 38.203125H168.37895930681756L166.95167520716615 44.91796875Q168.29745168659034 41.89453125 170.66556515467363 39.767578125Q173.03367862275695 37.640625 176.44383487275695 37.640625Q181.92820987275695 37.640625 183.68934710212062 41.015625Q185.45048433148432 44.390625 184.20254483074194 50.26171875L175.556640625 90.9375H163.146484375L171.51589899075714 51.5625Q171.84469742209043 50.015625 171.49211085788588 48.697265625Q171.13952429368132 47.37890625 169.59264929368132 47.37890625Q168.15124304368132 47.37890625 167.2527244574768 48.380859375Q166.35420587127226 49.3828125 165.86083522737076 50.876953125Q165.36746458346926 52.37109375 165.05361153537837 53.84765625L157.169921875 90.9375Z"/>
+          </g>
+          <path fill="#FFFFFF" d="M195.3355150590606 91.5Q187.9175463090606 91.5 184.9503926157651 87.017578125Q181.9832389224696 82.53515625 183.78415760318163 74.0625L190.0313277985146 44.671875Q191.72015610490845 36.7265625 196.47922664959023 32.61328125Q201.238297194272 28.5 208.726578444272 28.5Q216.214859694272 28.5 219.22532039959026 32.61328125Q222.23578110490848 36.7265625 220.5469527985146 44.671875L214.29978260318163 74.0625Q212.4988639224696 82.53515625 207.6261738657651 87.017578125Q202.7534838090606 91.5 195.3355150590606 91.5ZM197.86213589433322 80.109375Q200.67463589433322 80.109375 201.83290309562102 74.66015625L208.25194519824188 44.4609375Q209.2233951089994 39.890625 206.4812076089994 39.890625Q203.3874576089994 39.890625 202.39358962337826 44.56640625L195.9820202123786 74.73046875Q195.36925949943924 77.61328125 195.80710394688623 78.861328125Q196.24494839433322 80.109375 197.86213589433322 80.109375Z"/>
+          <path fill="#FFFFFF" d="M229.8237963090606 91.5Q214.2144213090606 91.5 217.5771325386059 75.6796875L218.46638284153008 71.49609375H231.12263284153008L229.8074391161968 77.68359375Q229.42633184351502 79.4765625 229.9127487864999 80.49609375Q230.39916572948474 81.515625 231.94604072948474 81.515625Q234.68822822948474 81.515625 235.5625331491665 77.40234375Q236.29485692804525 73.95703125 235.21587622167402 72.251953125Q234.1368955153028 70.546875 232.3989478882573 68.96484375L226.78258980657546 63.796875Q224.14161572006026 61.3359375 223.0721419165148 58.59375Q222.0026681129693 55.8515625 223.0413722483177 50.96484375Q224.00534946745404 46.4296875 226.79516493863582 43.4765625Q229.5849804098176 40.5234375 233.45972014128728 39.08203125Q237.33445987275695 37.640625 241.48289737275695 37.640625Q256.81102237275695 37.640625 253.56040151752987 52.93359375L253.35116615213593 53.91796875H240.34335365213593L240.769297074545 51.9140625Q241.10556819749954 50.33203125 240.87449937059043 48.85546875Q240.64343054368132 47.37890625 239.06139929368132 47.37890625Q236.38952429368132 47.37890625 235.79170896398438 50.19140625Q235.18642094266625 53.0390625 237.0926771280905 54.65625L243.6867885854542 60.3515625Q246.7825867138633 62.98828125 248.4914151018785 66.609375Q250.2002434898937 70.23046875 248.9224132226665 76.2421875Q247.33820259896962 83.6953125 242.2724057040151 87.59765625Q237.2066088090606 91.5 229.8237963090606 91.5Z"/>
+        </g>
+      </defs>
+      <use href="#wordmark"></use>
+    </svg>
+
+    <div class="hero-row">
+      <p class="display" style="font-size:var(--t-xl)" data-i18n="h1">Saf Arch Linux.<br><em>Dokuz soruda</em> kurulu.</p>
+      <div class="hero-side">
+        <p class="lede" data-i18n="lede">Geliştiriciler ve oyuncular için bir işletim sistemi. sOnOs; masaüstünü, Steam ve Vulkan ile oyun desteğini, NVIDIA sürücüsünü ve istersen eksiksiz geliştirme araçlarını kurar. Altında sade bir Arch Linux vardır, <strong>resmi depolar ve AUR ile uyumlu kalır.</strong></p>
+        <div class="ctas">
+          <a class="btn" href="https://github.com/aOnurTheDev/sOnOs/releases"><span data-i18n="dl2">ISO'yu indir ↓</span></a>
+          <a class="btn ghost" href="https://github.com/aOnurTheDev/sOnOs"><span data-i18n="src">Kaynak kod</span></a>
+        </div>
+      </div>
+    </div>
+
+    <ul class="meta">
+      <li class="beta"><b>Beta</b> · <span data-i18n="m1">aktif geliştirmede</span></li>
+      <li><span data-i18n="m2">Taban</span> <b>Arch Linux</b></li>
+      <li><span data-i18n="m3">Sürüm modeli</span> <b>rolling</b></li>
+      <li><span data-i18n="m4">Mimari</span> <b>x86_64</b></li>
+      <li><span data-i18n="m5">Lisans</span> <b>GPL-2.0</b></li>
+    </ul>
+  </div>
+</section>
+
+<!-- CONSOLE -->
+<section class="console" aria-labelledby="console-h">
+  <div class="wrap">
+    <div class="term" role="img" aria-label="sOnOs canlı ISO konsolu: ASCII logo, /etc/os-release ve soninstall komutu">
+      <div class="term-bar"><span>tty1 · root@sOnOs</span><span>soninstall</span></div>
+<pre>                  <span class="r">::::::::</span>              ::::::::
+                <span class="r">:+:    :+:</span>            :+:    :+:
+     +:++:++:+ <span class="r">+:+    +:+ +:++:++:+</span>  +:+    +:+  +:++:++:+
+   +#+        <span class="r">+#+    +:+ +#+    +#+</span> +#+    +:+ +#+
+  +#++:++#++ <span class="r">+#+    +#+ +#+    +#+</span> +#+    +#+ +#++:++#++
+        #+#  <span class="r">#+#  #+#  #+#   #+#</span>   #+#   #+#        #+#
+#########   <span class="r">########  ###    ###</span>  ########  #########
+
+<span class="p">root@sOnOs ~ #</span> <span class="b">cat /etc/os-release</span>
+<span class="k">NAME</span>="sOnOs"
+<span class="k">PRETTY_NAME</span>="sOnOs"
+<span class="k">ID</span>=sonos
+<span class="k">ID_LIKE</span>=arch
+<span class="k">BUILD_ID</span>=rolling
+<span class="k">HOME_URL</span>="https://github.com/aOnurTheDev/sOnOs"
+<span class="k">LOGO</span>=sonos
+
+<span class="p">root@sOnOs ~ #</span> <span class="b">soninstall</span> <span class="cursor"></span></pre>
+    </div>
+    <div class="console-text">
+      <p class="eyebrow">tty1</p>
+      <h2 class="display" id="console-h" data-i18n="c_h">USB'den açılır, kurucuyla karşılar.</h2>
+      <p class="lede" data-i18n="c_p1">Canlı ISO bir konsolda açılır ve kurucu <code>soninstall</code> ilk konsolda kendiliğinden başlar. Kurucudan çıkarsan, onu yeniden başlatmak için adını yazman yeterli.</p>
+      <p class="lede" data-i18n="c_p2">sOnOs adı ve logosu önyükleme menüsünde, konsolda, “Bu sistem hakkında” sayfalarında ve fastfetch’te görünür. Güncellemelerden sonra da yerinde kalır.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NINE QUESTIONS -->
+<section class="band-red" id="sorular" aria-labelledby="q-h">
+  <div class="wrap">
+    <div class="q-head">
+      <div style="display:grid;gap:1.25rem">
+        <p class="eyebrow"><span class="ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span> soninstall</p>
+        <h2 class="display" id="q-h" data-i18n="q_h">Dokuz soru.<br>Gerisi hazır.</h2>
+      </div>
+      <p data-i18n="q_p">Kurucu yalnızca bunları sorar. Diske bir şey yazılmadan önce tüm seçimlerinin özetini gösterir.</p>
+    </div>
+
+    <ol class="questions">
+      <li><span class="n">1</span><h3 data-i18n="q1">Dil</h3><p data-i18n="q1p">Kurucu bu dilde devam eder, kurulan sistemin dili de bu olur.</p></li>
+      <li><span class="n">2</span><h3 data-i18n="q2">Klavye düzeni</h3><p data-i18n="q2p">Seçtiğin dilin düzeni hazır gelir, Türkçe için <code>trq</code>.</p></li>
+      <li><span class="n">3</span><h3 data-i18n="q3">Kullanıcı adı</h3><p data-i18n="q3p">Her gün oturum açacağın hesap.</p></li>
+      <li><span class="n">4</span><h3 data-i18n="q4">Parola</h3><p data-i18n="q4p">root hesabı için de aynı parola kullanılır.</p></li>
+      <li><span class="n">5</span><h3 data-i18n="q5">Saat dilimi</h3><p data-i18n="q5p">Sistem saati buna göre ayarlanır.</p></li>
+      <li><span class="n">6</span><h3 data-i18n="q6">Masaüstü ortamı</h3><p data-i18n="q6p">KDE Plasma, GNOME, COSMIC, Hyprland ve daha fazlası.</p></li>
+      <li><span class="n">7</span><h3 data-i18n="q7">NVIDIA sürücüsü</h3><p data-i18n="q7p"><code>nvidia-open</code>, GTX 16 ve RTX 20 serisi ile sonrası için. Bilgisayarda NVIDIA kartı varsa seçili gelir.</p></li>
+      <li><span class="n">8</span><h3 data-i18n="q8">Geliştirme araçları</h3><p data-i18n="q8p">Derleyiciler, VS Code, Docker ve tüm diller. Yaklaşık 10 GB, varsayılan olarak kapalı.</p></li>
+      <li><span class="n">9</span><h3 data-i18n="q9">Disk</h3><p data-i18n="q9p">Varsayılan bölümleme ya da kendi bölümlerin.</p></li>
+    </ol>
+
+    <div class="defaults">
+      <p data-i18n="q_def">Sorulmayanlar hazır ayarla gelir:</p>
+      <span>NetworkManager</span><span>PipeWire</span><span>Bluetooth</span><span>zram swap</span><span>systemd-boot</span><span>hostname sOnOs</span>
+    </div>
+  </div>
+</section>
+
+<!-- EVERY INSTALL -->
+<section class="inside" id="icerik" aria-labelledby="in-h">
+  <div class="wrap">
+    <div class="inside-head">
+      <p class="eyebrow" data-i18n="in_e">Kutudan çıkanlar</p>
+      <h2 class="display" id="in-h" data-i18n="in_h">Her kurulumda, ilk açılışta.</h2>
+      <p class="lede" data-i18n="in_p">Hangi masaüstünü seçersen seç, kurulum bunlarla biter. Seçtiğin ortam kendi günlük uygulamalarıyla gelir.</p>
+      <div class="sizes">
+        <div class="size"><b>~7<small>GB</small></b><span data-i18n="sz1">geliştirme araçları olmadan</span></div>
+        <div class="size"><b>~17<small>GB</small></b><span data-i18n="sz2">geliştirme araçlarıyla</span></div>
+      </div>
+    </div>
+    <div class="groups">
+      <div class="group"><h3 data-i18n="g1">Oyun</h3><p data-i18n="g1p"><strong>Steam</strong> ve <strong>GameMode</strong>. Bilgisayardaki GPU için Vulkan sürücüleri, Steam’in istediği 32 bit sürümler dahil.</p></div>
+      <div class="group"><h3 data-i18n="g2">Uygulamalar</h3><p data-i18n="g2p"><strong>Firefox</strong> (varsa kendi dilinde), <strong>VLC</strong>, Blueman ve pavucontrol.</p></div>
+      <div class="group"><h3 data-i18n="g3">Araçlar</h3><p data-i18n="g3p">zsh, Neovim, Vim, micro, Git, fastfetch, btop ve 7-Zip. Canlı ISO’daki donanım, disk ve ağ araçları da kurulur.</p></div>
+      <div class="group"><h3 data-i18n="g4">Grafik</h3><p data-i18n="g4p">Kartın uygunsa NVIDIA’nın açık çekirdek sürücüsü <strong>nvidia-open</strong>. Daha eski kartlarda açık kaynak sürücüler kurulur.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEV TOOLS -->
+<section class="band-white" aria-labelledby="dev-h">
+  <div class="wrap">
+    <div class="dev-head">
+      <div style="display:grid;gap:1.25rem">
+        <p class="eyebrow" data-i18n="dev_e">8. soru · yaklaşık 10 GB</p>
+        <h2 class="display" id="dev-h" data-i18n="dev_h">“Evet” dersen hepsi gelir.</h2>
+      </div>
+      <p data-i18n="dev_p">C/C++ derleme araçları, Visual Studio Code, Docker, Arduino, AVR ve STM32 için gömülü araçlar. Bir de şu dillerin derleyicileri ya da çalışma ortamları:</p>
+    </div>
+    <ul class="wall">
+      <li>C/C++</li><li>Rust</li><li>Go</li><li>Python</li><li>Java</li><li>JavaScript</li><li>TypeScript</li><li>Ruby</li><li>PHP</li><li>Lua</li><li>Perl</li><li>Haskell</li><li>R</li><li>Elixir</li><li>OCaml</li><li>Fortran</li><li>Zig</li><li>D</li><li>C#</li><li>F#</li><li>Kotlin</li><li>Dart</li><li>Julia</li><li>Erlang</li><li>Clojure</li><li>Common Lisp</li><li>Scheme</li><li>Prolog</li><li>Nim</li><li>Crystal</li><li>Vala</li><li>Groovy</li><li>Assembly</li>
+    </ul>
+    <div class="wall-foot">
+      <span data-i18n="dev_f1">Tek tek seçmek için: <b>soninstall --script guided</b></span>
+      <span data-i18n="dev_f2">Varsayılan: <b>kapalı</b></span>
+      <span class="wall-status" id="wall-status" aria-hidden="true"></span>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE ISO -->
+<section class="rescue" id="kurtarma" aria-labelledby="iso-h">
+  <div class="wrap">
+    <div class="rescue-head">
+      <p class="eyebrow" data-i18n="iso_e">Canlı ISO</p>
+      <h2 class="display" id="iso-h" data-i18n="iso_h">Aynı USB bir kurtarma sistemi.</h2>
+      <p class="lede" data-i18n="iso_p">Kuruluma başlamadan da işine yarar. Bozulan bir diski kurtarmak, bir sunucuya bağlanmak ya da bir karta kod yüklemek için gereken paketler ISO’nun içinde:</p>
+    </div>
+    <dl class="pkgs">
+      <div><dt data-i18n="p1">Grafik</dt><dd><span>nvidia-open</span></dd></div>
+      <div><dt data-i18n="p2">Diskler ve kurtarma</dt><dd><span>clonezilla</span><span>partclone</span><span>testdisk</span><span>ddrescue</span><span>fsarchiver</span><span>smartmontools</span><span>btrfs-progs</span><span>bcachefs-tools</span><span>xfsprogs</span><span>f2fs-tools</span><span>ntfsprogs</span><span>exfatprogs</span><span>lvm2</span><span>mdadm</span></dd></div>
+      <div><dt data-i18n="p3">Ağ</dt><dd><span>iwd</span><span>networkmanager</span><span>modemmanager</span><span>openssh</span><span>openvpn</span><span>wireguard-tools</span><span>nmap</span><span>tcpdump</span></dd></div>
+      <div><dt data-i18n="p4">Sanallaştırma</dt><dd><span>docker</span><span>qemu-base</span><span>qemu-guest-agent</span><span>open-vm-tools</span><span>virtualbox-guest-utils</span><span>hyperv</span></dd></div>
+      <div><dt data-i18n="p5">Geliştirme</dt><dd><span>gcc</span><span>clang</span><span>cmake</span><span>gdb</span><span>valgrind</span><span>rust</span><span>go</span><span>python</span><span>npm</span><span>deno</span><span>jdk-openjdk</span><span>lua</span><span>git</span></dd></div>
+      <div><dt data-i18n="p6">Gömülü</dt><dd><span>arduino-cli</span><span>avr-libc</span><span>avrdude</span><span>openocd</span><span>stlink</span><span>dfu-util</span><span>minicom</span></dd></div>
+      <div><dt data-i18n="p7">Komut satırı</dt><dd><span>zsh</span><span>neovim</span><span>nano</span><span>tmux</span><span>btop</span><span>fastfetch</span><span>ripgrep</span><span>fd</span><span>jq</span><span>7zip</span></dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section class="install" id="indir" aria-labelledby="ins-h">
+  <div class="wrap">
+    <div class="install-head">
+      <div>
+        <p class="eyebrow" data-i18n="ins_e">İndir ve kur</p>
+        <h2 class="display" id="ins-h" data-i18n="ins_h">Dört adım.</h2>
+      </div>
+      <a class="btn" href="https://github.com/aOnurTheDev/sOnOs/releases"><span data-i18n="dl3">GitHub Releases ↗</span></a>
+    </div>
+    <ol class="steps">
+      <li>
+        <span class="n">1</span>
+        <h3 data-i18n="s1">ISO'yu indir</h3>
+        <div>
+          <p data-i18n="s1p">En son sürümü Releases sayfasından al. GitHub 2 GiB üstü dosyaları kabul etmediği için ISO, <code>sOnOs.iso.7z.001</code>, <code>.002</code> gibi parçalara bölünmüş olabilir. Hepsini aynı klasöre indir ve ilkini aç:</p>
+          <div class="cmd"><code>7z x sOnOs.iso.7z.001</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
+          <p data-i18n="s1p2" style="margin-top:.6rem">Windows’ta ilk parçaya sağ tıklayıp 7-Zip ile çıkar.</p>
+        </div>
+      </li>
+      <li>
+        <span class="n">2</span>
+        <h3 data-i18n="s2">USB belleğe yaz</h3>
+        <div>
+          <p data-i18n="s2p">Ventoy, balenaEtcher ya da <code>dd</code> kullanabilirsin.</p>
+          <div class="cmd"><code>sudo dd bs=4M if=sOnOs-x86_64.iso of=/dev/sdX status=progress oflag=sync</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
+          <p class="warn" data-i18n="s2w" style="margin-top:.75rem"><code>dd</code> hedef diskteki her şeyi siler. <code>sdX</code> yerine USB belleğin adını yaz ve önce <code>lsblk</code> ile doğru disk olduğundan emin ol.</p>
+        </div>
+      </li>
+      <li>
+        <span class="n">3</span>
+        <h3 data-i18n="s3">USB'den başlat</h3>
+        <div>
+          <p data-i18n="s3p">soninstall kendiliğinden açılır. Kablolu bağlantı yoksa, başlamadan önce Wi-Fi’ye bağlanmayı önerir. Kurucudan çıktıysan yeniden başlat:</p>
+          <div class="cmd"><code>soninstall</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
+        </div>
+      </li>
+      <li>
+        <span class="n">4</span>
+        <h3 data-i18n="s4">Dokuz soruyu yanıtla</h3>
+        <div>
+          <p data-i18n="s4p">Özeti kontrol et ve onayla. Bilgisayar yeniden başladığında masaüstün hazır. NVIDIA kartın GTX 16 ya da RTX 20 serisinden eskiyse 7. soruya “hayır” de.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- BUILD & CONTRIBUTE -->
+<section class="build" aria-label="Kaynak">
+  <div class="wrap">
+    <div class="build-col">
+      <p class="eyebrow">archiso</p>
+      <h2 class="display" data-i18n="b_h">ISO'yu kendin derle.</h2>
+      <p data-i18n="b_p">Arch Linux ya da Arch tabanlı bir sistemde <code>archiso</code> gerekir. Önce sOnInstall deposundaki <code>packaging/local/build-repo.sh</code> ile soninstall paket deposunu oluştur, sonra <code>pacman.conf</code> içindeki <code>[sonos]</code> deposunu o klasöre yönlendir. ISO <code>out/</code> klasörüne yazılır.</p>
+      <div class="cmd"><code>sudo mkarchiso -v -w /tmp/sonos-work -o out .</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
+    </div>
+    <div class="build-col">
+      <p class="eyebrow" data-i18n="c_e">Katkı</p>
+      <h2 class="display" data-i18n="k_h">Beta’dayız. Sesini duyur.</h2>
+      <p data-i18n="k_p">Hata bildirimleri, geri bildirim ve pull request’ler memnuniyetle karşılanır. Kurucu topluluk tarafından 40’tan fazla dile çevriliyor ve Türkçe çevirisi tamam. Yeni çeviriler de bekleniyor.</p>
+      <div class="links">
+        <a class="btn ghost small" href="https://github.com/aOnurTheDev/sOnOs"><span>aOnurTheDev/sOnOs ↗</span></a>
+        <a class="btn ghost small" href="https://github.com/aOnurTheDev/sOnInstall"><span>aOnurTheDev/sOnInstall ↗</span></a>
+        <a class="btn ghost small" href="https://github.com/aOnurTheDev/sOnOs/issues"><span data-i18n="issue">Hata bildir ↗</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <svg class="mark" viewBox="74 26 186 68" aria-hidden="true"><use href="#wordmark"></use></svg>
+    <p data-i18n="foot">sOnOs, <a href="https://github.com/aOnurTheDev">aOnurTheDev</a> tarafından geliştirilir ve GPL-2.0 lisansıyla dağıtılır. soninstall GPL-3.0 lisanslıdır. sOnOs, Arch Linux projesiyle resmi bağı olmayan bağımsız bir dağıtımdır.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var EN = {
+    nav1: "Install", nav2: "What you get", nav3: "Live ISO", nav4: "Download",
+    dl: "Download ISO", dl2: "Download ISO ↓", src: "Source code", dl3: "GitHub Releases ↗",
+    h1: "Plain Arch Linux.<br><em>Nine questions</em> to install.",
+    lede: "An operating system for developers and gamers. sOnOs installs a desktop, gaming support with Steam and Vulkan, the NVIDIA driver and, if you want them, complete development toolchains. Underneath is a plain Arch Linux that <strong>stays compatible with the official repositories and the AUR.</strong>",
+    m1: "under active development", m2: "Base", m3: "Release model", m4: "Architecture", m5: "License",
+    c_h: "Boots from USB, straight into the installer.",
+    c_p1: "The live ISO boots into a console and the installer, <code>soninstall</code>, starts on the first console by itself. If you quit it, type its name to start it again.",
+    c_p2: "The sOnOs name and logo appear in the boot menu, the console, the “About this system” pages and fastfetch, and they stay in place across updates.",
+    q_h: "Nine questions.<br>The rest is ready.",
+    q_p: "This is all the installer asks. It shows a summary of your choices before anything is written to the disk.",
+    q1: "Language", q1p: "The installer continues in it, and it becomes the language of the installed system.",
+    q2: "Keyboard layout", q2p: "Preselected from your language, e.g. <code>trq</code> for Turkish.",
+    q3: "Username", q3p: "The account you log in with every day.",
+    q4: "Password", q4p: "The same password is also used for root.",
+    q5: "Time zone", q5p: "Sets the system clock.",
+    q6: "Desktop environment", q6p: "KDE Plasma, GNOME, COSMIC, Hyprland and more.",
+    q7: "NVIDIA driver", q7p: "<code>nvidia-open</code>, for the GTX 16 and RTX 20 series and newer. Preselected when an NVIDIA card is found.",
+    q8: "Development tools", q8p: "Compilers, VS Code, Docker and every language. About 10 GB, off by default.",
+    q9: "Disk", q9p: "The default layout or your own partitions.",
+    q_def: "Everything else uses sensible defaults:",
+    in_e: "Out of the box", in_h: "In every installation, on first boot.",
+    in_p: "Whichever desktop you pick, the installation ends with these. Your desktop environment comes with its own everyday apps.",
+    sz1: "without development tools", sz2: "with development tools",
+    g1: "Gaming", g1p: "<strong>Steam</strong> and <strong>GameMode</strong>. Vulkan drivers for the GPU in the machine, including the 32-bit ones Steam needs.",
+    g2: "Apps", g2p: "<strong>Firefox</strong> (in your language when a translation exists), <strong>VLC</strong>, Blueman and pavucontrol.",
+    g3: "Tools", g3p: "zsh, Neovim, Vim, micro, Git, fastfetch, btop and 7-Zip, plus the hardware, disk and network tools from the live ISO.",
+    g4: "Graphics", g4p: "NVIDIA’s open kernel driver <strong>nvidia-open</strong> when your card supports it. Older cards get the open-source drivers.",
+    dev_e: "Question 8 · about 10 GB", dev_h: "Say “yes” and you get all of it.",
+    dev_p: "C/C++ build tools, Visual Studio Code, Docker, and embedded tools for Arduino, AVR and STM32. Plus compilers or runtimes for these languages:",
+    dev_f1: "To pick them one by one: <b>soninstall --script guided</b>", dev_f2: "Default: <b>off</b>",
+    iso_e: "Live ISO", iso_h: "The same USB is a rescue system.",
+    iso_p: "It is useful before you install anything. The packages for recovering a broken disk, reaching a server or flashing a board are already on the ISO:",
+    p1: "Graphics", p2: "Disks & recovery", p3: "Networking", p4: "Virtualization", p5: "Development", p6: "Embedded", p7: "Command line",
+    ins_e: "Download and install", ins_h: "Four steps.",
+    s1: "Download the ISO",
+    s1p: "Get the latest release from the Releases page. GitHub does not accept files over 2 GiB, so the ISO may be split into parts named <code>sOnOs.iso.7z.001</code>, <code>.002</code> and so on. Download every part into the same folder and extract the first one:",
+    s1p2: "On Windows, right-click the first part and extract it with 7-Zip.",
+    s2: "Write it to a USB drive", s2p: "Use Ventoy, balenaEtcher or <code>dd</code>.",
+    s2w: "<code>dd</code> erases everything on the target disk. Replace <code>sdX</code> with your USB drive and check it with <code>lsblk</code> first.",
+    s3: "Boot from the USB", s3p: "soninstall opens by itself. Without a network cable, it offers to connect to Wi-Fi before it starts. If you quit it, start it again:",
+    s4: "Answer nine questions", s4p: "Check the summary and confirm. When the machine restarts, your desktop is ready. If your NVIDIA card is older than the GTX 16 or RTX 20 series, answer “no” to question 7.",
+    b_h: "Build the ISO yourself.",
+    b_p: "You need <code>archiso</code> on Arch Linux or an Arch-based system. First build the soninstall package repository with <code>packaging/local/build-repo.sh</code> from sOnInstall, then point the <code>[sonos]</code> repository in <code>pacman.conf</code> at that folder. The ISO is written to <code>out/</code>.",
+    c_e: "Contribute", k_h: "We’re in beta. Tell us what breaks.",
+    k_p: "Bug reports, feedback and pull requests are welcome. The community translates the installer into more than 40 languages, and the Turkish translation is complete. New translations are welcome too.",
+    issue: "Report a bug ↗",
+    copy: "Copy",
+    foot: "sOnOs is developed by <a href=\"https://github.com/aOnurTheDev\">aOnurTheDev</a> and distributed under the GPL-2.0 license. soninstall is licensed under GPL-3.0. sOnOs is an independent distribution with no official affiliation with the Arch Linux project."
+  };
+
+  var nodes = Array.prototype.slice.call(document.querySelectorAll("[data-i18n]"));
+  var TR = {};
+  nodes.forEach(function (n) { if (!(n.dataset.i18n in TR)) TR[n.dataset.i18n] = n.innerHTML; });
+  TR.copied = "Kopyalandı"; EN.copied = "Copied";
+  var dict = TR;
+
+  function setLang(lang) {
+    dict = lang === "en" ? EN : TR;
+    nodes.forEach(function (n) {
+      var v = dict[n.dataset.i18n];
+      if (v != null) n.innerHTML = v;
+    });
+    document.documentElement.lang = lang;
+    document.querySelectorAll(".lang button").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.dataset.lang === lang));
+    });
+    try { localStorage.setItem("sonos-lang", lang); } catch (e) {}
+  }
+
+  var initial = "tr";
+  try {
+    var saved = localStorage.getItem("sonos-lang");
+    if (saved === "tr" || saved === "en") initial = saved;
+    else if (!/^tr\b/i.test(navigator.language || "tr")) initial = "en";
+  } catch (e) {
+    if (!/^tr\b/i.test(navigator.language || "tr")) initial = "en";
+  }
+  if (initial !== "tr") setLang(initial);
+
+  document.querySelectorAll(".lang button").forEach(function (b) {
+    b.addEventListener("click", function () { setLang(b.dataset.lang); });
+  });
+
+  document.querySelectorAll(".copy").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var code = btn.parentNode.querySelector("code");
+      var text = code.textContent;
+      var done = function () {
+        btn.textContent = dict.copied;
+        btn.classList.add("done");
+        setTimeout(function () { btn.textContent = dict.copy; btn.classList.remove("done"); }, 1600);
+      };
+      var fallback = function () {
+        var r = document.createRange(); r.selectNodeContents(code);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        try { if (document.execCommand("copy")) done(); } catch (e) {}
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else { fallback(); }
+    });
+  });
+  // Scroll motion: the wordmark drifts, the nine questions tick off like an
+  // installer progress bar, the language wall fills in like a package install.
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.documentElement.classList.add("js-motion");
+    var mark = document.querySelector(".hero .mark");
+    var qs = Array.prototype.slice.call(document.querySelectorAll(".questions li"));
+    var ticks = Array.prototype.slice.call(document.querySelectorAll(".ticks i"));
+    var wall = document.querySelector(".wall");
+    var words = Array.prototype.slice.call(wall.children);
+    var status = document.getElementById("wall-status");
+    var queued = false;
+    var clamp = function (v) { return Math.max(0, Math.min(1, v)); };
+
+    var frame = function () {
+      queued = false;
+      var vh = window.innerHeight;
+
+      var hp = clamp(window.scrollY / (mark.offsetHeight + 240));
+      mark.style.transform = "translateX(" + (-hp * 5).toFixed(2) + "%)";
+
+      var done = 0;
+      qs.forEach(function (li) {
+        var on = li.getBoundingClientRect().top < vh * 0.62;
+        li.classList.toggle("done", on);
+        if (on) done++;
+      });
+      ticks.forEach(function (t, i) { t.classList.toggle("done", i < done); });
+
+      var r = wall.getBoundingClientRect();
+      var wp = clamp((vh * 0.85 - r.top) / (r.height + vh * 0.35));
+      var k = Math.round(wp * words.length);
+      words.forEach(function (w, i) { w.classList.toggle("in", i < k); });
+      var en = document.documentElement.lang === "en";
+      status.textContent = "(" + k + "/" + words.length + ") " +
+        (k === words.length ? (en ? "done" : "tamam")
+          : k === 0 ? "" : (en ? "installing " : "kuruluyor ") + words[k - 1].textContent);
+    };
+    var request = function () { if (!queued) { queued = true; requestAnimationFrame(frame); } };
+    window.addEventListener("scroll", request, { passive: true });
+    window.addEventListener("resize", request);
+    document.querySelectorAll(".lang button").forEach(function (b) { b.addEventListener("click", request); });
+    frame();
+  }
+})();
+</script>
+</body>
+</html>
