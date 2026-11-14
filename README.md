@@ -8,7 +8,7 @@
 #########   ########  ###    ###  ########  #########
 ```
 
-The website of [sOnOs](https://github.com/aOnurTheDev/sOnOs), an Arch Linux-based operating system for developers and gamers.
+The website of [sOnOs](https://github.com/sOn-Os/sOnOs), an Arch Linux-based operating system for developers and gamers.
 
 **Live at <https://son-os.github.io>**
 
@@ -37,7 +37,7 @@ Then go to <http://localhost:8000>.
 | Installation | Download, write to USB, boot, answer the questions |
 | Build & contribute | Building the ISO with `mkarchiso`, links to both repositories |
 
-The content comes from the READMEs of [sOnOs](https://github.com/aOnurTheDev/sOnOs) and [sOnInstall](https://github.com/aOnurTheDev/sOnInstall). When either one changes (new desktops, new packages, new sizes), update the page to match.
+The content comes from the READMEs of [sOnOs](https://github.com/sOn-Os/sOnOs) and [sOnInstall](https://github.com/sOn-Os/sOnInstall). When either one changes (new desktops, new packages, new sizes), update the page to match.
 
 ## Languages
 
