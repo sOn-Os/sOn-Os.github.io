@@ -400,7 +400,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
     <a href="#top" aria-label="sOnOs">
       <svg class="mark top-mark" viewBox="74 26 186 68" aria-hidden="true"><use href="#wordmark"></use></svg>
     </a>
-    <nav aria-label="Bölümler">
+    <nav aria-label="Bölümler" data-i18n-aria="a_nav">
       <a href="#sorular" data-i18n="nav1">Kurulum</a>
       <a href="#icerik" data-i18n="nav2">Neler gelir</a>
       <a href="#kurtarma" data-i18n="nav3">Canlı ISO</a>
@@ -459,7 +459,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 <!-- CONSOLE -->
 <section class="console" aria-labelledby="console-h">
   <div class="wrap">
-    <div class="term" role="img" aria-label="sOnOs canlı ISO konsolu: ASCII logo, /etc/os-release ve soninstall komutu">
+    <div class="term" role="img" aria-label="sOnOs canlı ISO konsolu: ASCII logo, /etc/os-release ve soninstall komutu" data-i18n-aria="a_term">
       <div class="term-bar"><span>tty1 · root@sOnOs</span><span>soninstall</span></div>
 <pre>                  <span class="r">::::::::</span>              ::::::::
                 <span class="r">:+:    :+:</span>            :+:    :+:
@@ -698,7 +698,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 </section>
 
 <!-- BUILD & CONTRIBUTE -->
-<section class="build" aria-label="Kaynak">
+<section class="build" aria-label="Kaynak" data-i18n-aria="a_src">
   <div class="wrap">
     <div class="build-col">
       <p class="eyebrow">archiso</p>
@@ -732,6 +732,8 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 (function () {
   var EN = {
     nav1: "Install", nav2: "What you get", nav3: "Live ISO", nav4: "Download",
+    a_nav: "Sections", a_src: "Source",
+    a_term: "The console of the sOnOs live ISO: the ASCII logo, /etc/os-release and the soninstall command",
     dl: "Download ISO", dl2: "Download ISO ↓", src: "Source code",
     h1: "Plain Arch Linux.<br><em>Nine questions</em> to install.",
     lede: "An operating system for developers and gamers. sOnOs installs a desktop, gaming support with Steam and Vulkan, the NVIDIA driver and, if you want them, complete development toolchains. Underneath is a plain Arch Linux that <strong>stays compatible with the official repositories and the AUR.</strong>",
@@ -795,6 +797,16 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
   var TR = {};
   nodes.forEach(function (n) { if (!(n.dataset.i18n in TR)) TR[n.dataset.i18n] = n.innerHTML; });
   TR.copied = "Kopyalandı"; EN.copied = "Copied";
+
+  // Labels for screen readers and image descriptions follow the language too
+  var attrNodes = [];
+  [["data-i18n-aria", "aria-label"], ["data-i18n-alt", "alt"]].forEach(function (pair) {
+    document.querySelectorAll("[" + pair[0] + "]").forEach(function (n) {
+      var key = n.getAttribute(pair[0]);
+      TR[key] = n.getAttribute(pair[1]);
+      attrNodes.push([n, pair[1], key]);
+    });
+  });
   var dict = TR;
 
   function setLang(lang) {
@@ -802,6 +814,10 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
     nodes.forEach(function (n) {
       var v = dict[n.dataset.i18n];
       if (v != null) n.innerHTML = v;
+    });
+    attrNodes.forEach(function (a) {
+      var v = dict[a[2]];
+      if (v != null) a[0].setAttribute(a[1], v);
     });
     document.documentElement.lang = lang;
     document.querySelectorAll(".lang button").forEach(function (b) {
