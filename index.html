@@ -193,7 +193,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
   color: var(--smoke); font-size: var(--t-xs); letter-spacing: 0.04em;
 }
 .term-bar span:last-child { color: var(--red); }
-.term pre { margin: 0; padding: 1.1rem 1.2rem 1.3rem; overflow-x: auto; color: #D9D2D2; font: inherit; }
+.term pre { margin: 0; padding: 1.1rem 1.2rem 1.3rem; overflow-x: auto; color: #D9D2D2; font: inherit; scrollbar-width: thin; scrollbar-color: var(--line) var(--coal); }
 .term .r { color: var(--red); }
 .term .k { color: var(--red); }
 .term .p { color: var(--smoke); }
@@ -322,7 +322,8 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 .cmd.plain code::before { content: none; }
 .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 4vw, 3rem) clamp(2rem, 5vw, 4rem); }
 .steps li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.4rem 1.25rem; align-content: start; }
-.steps .n { grid-row: span 3; font: 400 clamp(2.75rem, 2rem + 2vw, 4rem)/0.9 var(--display); color: var(--red); transform: skewX(var(--slant)); min-width: 1.1ch; }
+/* The slant pushes the top of a wide digit to the right, into the heading: keep some room for it */
+.steps .n { grid-row: span 3; font: 400 clamp(2.75rem, 2rem + 2vw, 4rem)/0.9 var(--display); color: var(--red); transform: skewX(var(--slant)); min-width: 1.1ch; padding-right: 0.14em; }
 .steps h3 { margin: 0; font: 400 var(--t-lg)/1.1 var(--display); transform: skewX(var(--slant)); transform-origin: 0 100%; }
 .steps p { margin: 0; color: var(--smoke); }
 .steps p + p { margin-top: 0.25rem; }
@@ -331,7 +332,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
   display: flex; align-items: stretch; margin-top: 0.6rem;
   background: var(--coal); border: 1px solid var(--line); min-width: 0;
 }
-.cmd code { flex: 1; min-width: 0; overflow-x: auto; white-space: pre; padding: 0.8rem 1rem; font-size: 0.8rem; font-stretch: 75%; color: var(--white); }
+.cmd code { flex: 1; min-width: 0; overflow-x: auto; white-space: pre; padding: 0.8rem 1rem; font-size: 0.8rem; font-stretch: 75%; color: var(--white); scrollbar-width: thin; scrollbar-color: var(--line) var(--coal); }
 .cmd code::before { content: "$ "; color: var(--red); }
 .copy {
   flex: none; border: 0; border-left: 1px solid var(--line); background: none; color: var(--smoke);
