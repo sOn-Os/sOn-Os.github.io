@@ -340,6 +340,8 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 .build-col { display: grid; gap: 1rem; align-content: start; }
 .build h2 { font-size: clamp(2rem, 1.4rem + 2vw, 3rem); }
 .build p { margin: 0; color: var(--smoke); max-width: 60ch; }
+.build p a { color: var(--white); }
+.build .cmd { margin-top: 0; }
 .links { display: flex; flex-wrap: wrap; gap: 1rem 1.25rem; margin-top: 0.5rem; padding-left: 0.5rem; }
 
 /* ---------- footer ---------- */
@@ -703,16 +705,19 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
     <div class="build-col">
       <p class="eyebrow">archiso</p>
       <h2 class="display" data-i18n="b_h">ISO'yu kendin derle.</h2>
-      <p data-i18n="b_p">Arch Linux ya da Arch tabanlı bir sistemde <code>archiso</code> gerekir. Önce sOnInstall deposundaki <code>packaging/local/build-repo.sh</code> ile soninstall paket deposunu oluştur, sonra <code>pacman.conf</code> içindeki <code>[sonos]</code> deposunu o klasöre yönlendir. ISO <code>out/</code> klasörüne yazılır.</p>
-      <div class="cmd"><code>sudo mkarchiso -v -w /tmp/sonos-work -o out .</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
+      <p data-i18n="b_p">Arch Linux ya da Arch tabanlı bir sistemde <code>archiso</code> gerekir. Kurucu paketi <a href="https://github.com/sOn-Os/sOnInstall">sOnInstall</a> deposundan gelir: oradaki <a href="https://github.com/sOn-Os/sOnInstall/blob/master/packaging/local/build-repo.sh"><code>packaging/local/build-repo.sh</code></a> betiği paketi derler ve yerel <code>[sonos]</code> deposunu oluşturur.</p>
+      <div class="cmd"><code>packaging/local/build-repo.sh /var/tmp/sonos-repo</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
+      <p data-i18n="b_p2">Sonra sOnOs deposunda, o depoyu kullanan <code>pacman.build.conf</code> ile ISO’yu derle. ISO <code>out/</code> klasörüne yazılır.</p>
+      <div class="cmd"><code>sudo mkarchiso -v -r -C pacman.build.conf -w /tmp/sonos-work -o out .</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
     </div>
     <div class="build-col">
       <p class="eyebrow" data-i18n="c_e">Katkı</p>
       <h2 class="display" data-i18n="k_h">Beta’dayız. Sesini duyur.</h2>
-      <p data-i18n="k_p">Hata bildirimleri, geri bildirim ve pull request’ler memnuniyetle karşılanır. Kurucu topluluk tarafından 40’tan fazla dile çevriliyor ve Türkçe çevirisi tamam. Yeni çeviriler de bekleniyor.</p>
+      <p data-i18n="k_p">Hata bildirimleri, geri bildirim ve pull request’ler memnuniyetle karşılanır. Soruların ve fikirlerin için GitHub Discussions açık. Kurucu topluluk tarafından 40’tan fazla dile çevriliyor ve Türkçe çevirisi tamam. Yeni çeviriler de bekleniyor.</p>
       <div class="links">
         <a class="btn ghost small" href="https://github.com/sOn-Os/sOnOs"><span>sOn-Os/sOnOs ↗</span></a>
         <a class="btn ghost small" href="https://github.com/sOn-Os/sOnInstall"><span>sOn-Os/sOnInstall ↗</span></a>
+        <a class="btn ghost small" href="https://github.com/sOn-Os/sOnOs/discussions"><span data-i18n="disc">Tartışmalar ↗</span></a>
         <a class="btn ghost small" href="https://github.com/sOn-Os/sOnOs/issues"><span data-i18n="issue">Hata bildir ↗</span></a>
       </div>
     </div>
@@ -785,10 +790,11 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
     s3: "Boot from the USB", s3p: "soninstall opens by itself. Without a network cable, it offers to connect to Wi-Fi before it starts. If you quit it, start it again:",
     s4: "Answer nine questions", s4p: "Check the summary and confirm. When the machine restarts, your desktop is ready. If your NVIDIA card is older than the GTX 16 or RTX 20 series, answer “no” to question 7.",
     b_h: "Build the ISO yourself.",
-    b_p: "You need <code>archiso</code> on Arch Linux or an Arch-based system. First build the soninstall package repository with <code>packaging/local/build-repo.sh</code> from sOnInstall, then point the <code>[sonos]</code> repository in <code>pacman.conf</code> at that folder. The ISO is written to <code>out/</code>.",
+    b_p: "You need <code>archiso</code> on Arch Linux or an Arch-based system. The installer package comes from the <a href=\"https://github.com/sOn-Os/sOnInstall\">sOnInstall</a> repository: its <a href=\"https://github.com/sOn-Os/sOnInstall/blob/master/packaging/local/build-repo.sh\"><code>packaging/local/build-repo.sh</code></a> script builds the package and the local <code>[sonos]</code> repository.",
+    b_p2: "Then, in the sOnOs repository, build the ISO with <code>pacman.build.conf</code>, which uses that repository. The ISO is written to <code>out/</code>.",
     c_e: "Contribute", k_h: "We’re in beta. Tell us what breaks.",
-    k_p: "Bug reports, feedback and pull requests are welcome. The community translates the installer into more than 40 languages, and the Turkish translation is complete. New translations are welcome too.",
-    issue: "Report a bug ↗",
+    k_p: "Bug reports, feedback and pull requests are welcome. For questions and ideas, GitHub Discussions is open. The community translates the installer into more than 40 languages, and the Turkish translation is complete. New translations are welcome too.",
+    issue: "Report a bug ↗", disc: "Discussions ↗",
     copy: "Copy",
     foot: "sOnOs is developed by <a href=\"https://github.com/aOnurTheDev\">aOnurTheDev</a> and distributed under the GPL-2.0 license. soninstall is licensed under GPL-3.0. sOnOs is an independent distribution with no official affiliation with the Arch Linux project."
   };
