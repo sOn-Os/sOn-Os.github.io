@@ -275,6 +275,26 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 .pkgs dd { margin: 0; display: flex; flex-wrap: wrap; gap: 0.35rem 1.1rem; font: 400 var(--t-sm)/1.5 var(--mono); font-stretch: 75%; color: var(--smoke); }
 .pkgs dd span::before { content: "▸ "; color: var(--red); }
 
+/* ---------- desktop screenshots ---------- */
+.shots { padding-block: clamp(3.5rem, 8vw, 7rem); border-top: 1px solid var(--line); }
+.shots-head { display: grid; gap: 1.25rem; margin-bottom: clamp(2rem, 4vw, 3rem); max-width: 60rem; }
+.shots h2 { font-size: var(--t-xl); }
+.gallery { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.25rem, 3vw, 2.5rem); }
+.shot { margin: 0; display: grid; gap: 0.7rem; }
+.shot-frame {
+  position: relative; aspect-ratio: 16 / 9; overflow: hidden;
+  background: var(--coal) repeating-linear-gradient(102deg, transparent 0 26px, var(--line) 26px 27px);
+  border: 1px solid var(--line);
+}
+.shot-empty {
+  position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 1rem;
+  font: 400 var(--t-xs)/1.4 var(--mono); font-stretch: 87.5%; letter-spacing: 0.08em; text-transform: uppercase; color: var(--smoke);
+}
+.shot-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* A screenshot that is not there yet leaves the frame to the placeholder */
+.shot-frame.missing img { display: none; }
+.shot figcaption { font: 400 var(--t-lg)/1.1 var(--display); transform: skewX(var(--slant)); transform-origin: 0 100%; }
+
 /* ---------- install steps ---------- */
 .install { padding-block: clamp(3.5rem, 8vw, 7rem); border-top: 1px solid var(--line); }
 .install-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1.5rem 3rem; margin-bottom: clamp(2rem, 4vw, 3.5rem); }
@@ -352,7 +372,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
   .questions li:last-child { grid-column: 1 / -1; }
 }
 @media (max-width: 760px) {
-  .hero-row { grid-template-columns: minmax(0, 1fr); }
+  .hero-row, .gallery { grid-template-columns: minmax(0, 1fr); }
   .steps { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 560px) {
@@ -561,6 +581,55 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
   </div>
 </section>
 
+<!-- DESKTOPS -->
+<section class="shots" id="masaustu" aria-labelledby="shots-h">
+  <div class="wrap">
+    <div class="shots-head">
+      <p class="eyebrow" data-i18n="shots_e">6. soru</p>
+      <h2 class="display" id="shots-h" data-i18n="shots_h">Masaüstünü sen seç.</h2>
+      <p class="lede" data-i18n="shots_p">Dört örnek. Kurucuda bunlardan fazlası var ve hangisini seçersen seç aynı sOnOs kurulur.</p>
+    </div>
+    <ul class="gallery">
+      <li>
+        <figure class="shot">
+          <div class="shot-frame">
+            <span class="shot-empty" data-i18n="shot_soon">Ekran görüntüsü yakında</span>
+            <img src="screenshots/kde.webp" alt="KDE Plasma masaüstünde sOnOs" data-i18n-alt="shot_kde" width="1920" height="1080" loading="lazy" decoding="async">
+          </div>
+          <figcaption>KDE Plasma</figcaption>
+        </figure>
+      </li>
+      <li>
+        <figure class="shot">
+          <div class="shot-frame">
+            <span class="shot-empty" data-i18n="shot_soon">Ekran görüntüsü yakında</span>
+            <img src="screenshots/gnome.webp" alt="GNOME masaüstünde sOnOs" data-i18n-alt="shot_gnome" width="1920" height="1080" loading="lazy" decoding="async">
+          </div>
+          <figcaption>GNOME</figcaption>
+        </figure>
+      </li>
+      <li>
+        <figure class="shot">
+          <div class="shot-frame">
+            <span class="shot-empty" data-i18n="shot_soon">Ekran görüntüsü yakında</span>
+            <img src="screenshots/cosmic.webp" alt="COSMIC masaüstünde sOnOs" data-i18n-alt="shot_cosmic" width="1920" height="1080" loading="lazy" decoding="async">
+          </div>
+          <figcaption>COSMIC</figcaption>
+        </figure>
+      </li>
+      <li>
+        <figure class="shot">
+          <div class="shot-frame">
+            <span class="shot-empty" data-i18n="shot_soon">Ekran görüntüsü yakında</span>
+            <img src="screenshots/hyprland.webp" alt="Hyprland masaüstünde sOnOs" data-i18n-alt="shot_hyprland" width="1920" height="1080" loading="lazy" decoding="async">
+          </div>
+          <figcaption>Hyprland</figcaption>
+        </figure>
+      </li>
+    </ul>
+  </div>
+</section>
+
 <!-- INSTALL -->
 <section class="install" id="indir" aria-labelledby="ins-h">
   <div class="wrap">
@@ -696,6 +765,11 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
     iso_p: "It is useful before you install anything. The packages for recovering a broken disk, reaching a server or flashing a board are already on the ISO:",
     p1: "Graphics", p2: "Disks & recovery", p3: "Networking", p4: "Virtualization", p5: "Development", p6: "Embedded", p7: "Command line",
     ins_e: "Download and install", ins_h: "Four steps.",
+    shots_e: "Question 6", shots_h: "You pick the desktop.",
+    shots_p: "Four examples. The installer has more, and whichever you pick, you get the same sOnOs.",
+    shot_soon: "Screenshot coming soon",
+    shot_kde: "sOnOs on the KDE Plasma desktop", shot_gnome: "sOnOs on the GNOME desktop",
+    shot_cosmic: "sOnOs on the COSMIC desktop", shot_hyprland: "sOnOs on the Hyprland desktop",
     s1: "Download the ISO",
     s1p: "Use one of the buttons above. When the download finishes, verify the SHA256 value; if it does not match, the file is damaged, so download it again.",
     rel: "sOnOs 2026.11.13 · x86_64 · 3.1 GB",
@@ -769,6 +843,12 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
       } else { fallback(); }
     });
   });
+  document.querySelectorAll(".shot-frame img").forEach(function (img) {
+    var missing = function () { img.parentNode.classList.add("missing"); };
+    img.addEventListener("error", missing);
+    if (img.complete && img.naturalWidth === 0) missing();
+  });
+
   // Scroll motion: the wordmark drifts, the nine questions tick off like an
   // installer progress bar, the language wall fills in like a package install.
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
