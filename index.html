@@ -280,6 +280,20 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 .install-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1.5rem 3rem; margin-bottom: clamp(2rem, 4vw, 3.5rem); }
 .install-head > div { display: grid; gap: 1.25rem; }
 .install h2 { font-size: var(--t-2xl); }
+.download {
+  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem); margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--line);
+}
+.dl-main { display: grid; gap: 1rem; align-content: start; }
+.release { margin: 0; font: 400 var(--t-lg)/1.15 var(--display); transform: skewX(var(--slant)); transform-origin: 0 100%; }
+.reqs { margin: 0; color: var(--smoke); font: 400 var(--t-sm)/1.5 var(--mono); font-stretch: 87.5%; }
+.dl-alt { margin: 0; font-size: var(--t-sm); color: var(--smoke); }
+.dl-alt a:hover { color: var(--white); }
+.sha { display: grid; gap: 0.75rem; align-content: start; min-width: 0; }
+.sha p { margin: 0; color: var(--smoke); font-size: 0.95rem; }
+.sha .cmd { margin-top: 0; }
+.cmd.plain code::before { content: none; }
 .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 4vw, 3rem) clamp(2rem, 5vw, 4rem); }
 .steps li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.4rem 1.25rem; align-content: start; }
 .steps .n { grid-row: span 3; font: 400 clamp(2.75rem, 2rem + 2vw, 4rem)/0.9 var(--display); color: var(--red); transform: skewX(var(--slant)); min-width: 1.1ch; }
@@ -331,7 +345,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 @media (max-width: 1000px) {
   .top nav { display: none; }
   .lang { margin-left: auto; }
-  .console .wrap, .inside .wrap, .dev-head, .build .wrap { grid-template-columns: minmax(0, 1fr); }
+  .console .wrap, .inside .wrap, .dev-head, .build .wrap, .download { grid-template-columns: minmax(0, 1fr); }
   .questions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .questions li::before { display: none; }
   .questions li:nth-child(even)::before { display: block; content: ""; position: absolute; top: 0; bottom: 0; left: 0; border-left: 2px solid var(--ink); transform: skewX(var(--slant)); transform-origin: 0 100%; }
@@ -376,7 +390,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
       <button type="button" id="lang-tr" data-lang="tr" aria-pressed="true">TR</button>
       <button type="button" id="lang-en" data-lang="en" aria-pressed="false">EN</button>
     </div>
-    <a class="btn small" href="https://github.com/sOn-Os/sOnOs/releases"><span data-i18n="dl">ISO'yu indir</span></a>
+    <a class="btn small" href="#indir"><span data-i18n="dl">ISO'yu indir</span></a>
   </div>
 </header>
 
@@ -406,7 +420,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
       <div class="hero-side">
         <p class="lede" data-i18n="lede">Geliştiriciler ve oyuncular için bir işletim sistemi. sOnOs; masaüstünü, Steam ve Vulkan ile oyun desteğini, NVIDIA sürücüsünü ve istersen eksiksiz geliştirme araçlarını kurar. Altında sade bir Arch Linux vardır, <strong>resmi depolar ve AUR ile uyumlu kalır.</strong></p>
         <div class="ctas">
-          <a class="btn" href="https://github.com/sOn-Os/sOnOs/releases"><span data-i18n="dl2">ISO'yu indir ↓</span></a>
+          <a class="btn" href="#indir"><span data-i18n="dl2">ISO'yu indir ↓</span></a>
           <a class="btn ghost" href="https://github.com/sOn-Os/sOnOs"><span data-i18n="src">Kaynak kod</span></a>
         </div>
       </div>
@@ -555,16 +569,35 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
         <p class="eyebrow" data-i18n="ins_e">İndir ve kur</p>
         <h2 class="display" id="ins-h" data-i18n="ins_h">Dört adım.</h2>
       </div>
-      <a class="btn" href="https://github.com/sOn-Os/sOnOs/releases"><span data-i18n="dl3">GitHub Releases ↗</span></a>
     </div>
+
+    <div class="download">
+      <div class="dl-main">
+        <p class="release" data-i18n="rel">sOnOs 2026.11.13 · x86_64 · 3,1 GB</p>
+        <!-- TODO(sOnOs): the minimum hardware below is a placeholder. Replace it with tested values. -->
+        <p class="reqs" data-i18n="reqs">En az: 64 bit işlemci · 4 GB RAM · 20 GB disk · UEFI veya BIOS</p>
+        <div class="ctas">
+          <!-- TODO(sOnOs): placeholder address. Replace it with the real SourceForge project once it exists. -->
+          <a class="btn" href="https://sourceforge.net/projects/sonos/files/latest/download"><span data-i18n="dl_sf">SourceForge’dan indir ↓</span></a>
+          <a class="btn ghost" href="https://drive.google.com/file/d/1EBfFsHg2rxhtojXgOF9z-vgoghwFCJsb/view"><span data-i18n="dl_gd">Alternatif: Google Drive</span></a>
+        </div>
+        <p class="dl-alt"><a href="https://github.com/sOn-Os/sOnOs/releases/latest" data-i18n="dl_gh">GitHub Releases: sürüm notları ve sağlama toplamı ↗</a></p>
+      </div>
+      <div class="sha">
+        <p class="eyebrow">SHA256</p>
+        <!-- TODO(sOnOs): paste the real checksum of sOnOs-2026.11.13-x86_64.iso here, as plain text without data-i18n. -->
+        <div class="cmd plain"><code id="sha256" data-i18n="sha_todo">TODO: sağlama toplamı henüz yayınlanmadı</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
+        <p data-i18n="sha_p">İndirdiğin dosyayı doğrula: <code>.sha256</code> dosyasını ISO ile aynı klasöre indir ve şunu çalıştır.</p>
+        <div class="cmd"><code>sha256sum -c sOnOs-2026.11.13-x86_64.iso.sha256</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
+      </div>
+    </div>
+
     <ol class="steps">
       <li>
         <span class="n">1</span>
         <h3 data-i18n="s1">ISO'yu indir</h3>
         <div>
-          <p data-i18n="s1p">En son sürümü Releases sayfasından al. GitHub 2 GiB üstü dosyaları kabul etmediği için ISO, <code>sOnOs.iso.7z.001</code>, <code>.002</code> gibi parçalara bölünmüş olabilir. Hepsini aynı klasöre indir ve ilkini aç:</p>
-          <div class="cmd"><code>7z x sOnOs.iso.7z.001</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
-          <p data-i18n="s1p2" style="margin-top:.6rem">Windows’ta ilk parçaya sağ tıklayıp 7-Zip ile çıkar.</p>
+          <p data-i18n="s1p">Yukarıdaki düğmelerden birini kullan. İndirme bitince SHA256 değerini doğrula; değer tutmuyorsa dosya bozuk inmiştir, yeniden indir.</p>
         </div>
       </li>
       <li>
@@ -630,7 +663,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 (function () {
   var EN = {
     nav1: "Install", nav2: "What you get", nav3: "Live ISO", nav4: "Download",
-    dl: "Download ISO", dl2: "Download ISO ↓", src: "Source code", dl3: "GitHub Releases ↗",
+    dl: "Download ISO", dl2: "Download ISO ↓", src: "Source code",
     h1: "Plain Arch Linux.<br><em>Nine questions</em> to install.",
     lede: "An operating system for developers and gamers. sOnOs installs a desktop, gaming support with Steam and Vulkan, the NVIDIA driver and, if you want them, complete development toolchains. Underneath is a plain Arch Linux that <strong>stays compatible with the official repositories and the AUR.</strong>",
     m1: "under active development", m2: "Base", m3: "Release model", m4: "Architecture", m5: "License",
@@ -664,8 +697,13 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
     p1: "Graphics", p2: "Disks & recovery", p3: "Networking", p4: "Virtualization", p5: "Development", p6: "Embedded", p7: "Command line",
     ins_e: "Download and install", ins_h: "Four steps.",
     s1: "Download the ISO",
-    s1p: "Get the latest release from the Releases page. GitHub does not accept files over 2 GiB, so the ISO may be split into parts named <code>sOnOs.iso.7z.001</code>, <code>.002</code> and so on. Download every part into the same folder and extract the first one:",
-    s1p2: "On Windows, right-click the first part and extract it with 7-Zip.",
+    s1p: "Use one of the buttons above. When the download finishes, verify the SHA256 value; if it does not match, the file is damaged, so download it again.",
+    rel: "sOnOs 2026.11.13 · x86_64 · 3.1 GB",
+    reqs: "Minimum: 64-bit CPU · 4 GB RAM · 20 GB disk · UEFI or BIOS",
+    dl_sf: "Download from SourceForge ↓", dl_gd: "Alternative: Google Drive",
+    dl_gh: "GitHub Releases: release notes and checksum ↗",
+    sha_todo: "TODO: the checksum is not published yet",
+    sha_p: "Verify the file you downloaded: put the <code>.sha256</code> file in the same folder as the ISO and run this.",
     s2: "Write it to a USB drive", s2p: "Use Ventoy, balenaEtcher or <code>dd</code>.",
     s2w: "<code>dd</code> erases everything on the target disk. Replace <code>sdX</code> with your USB drive and check it with <code>lsblk</code> first.",
     s3: "Boot from the USB", s3p: "soninstall opens by itself. Without a network cable, it offers to connect to Wi-Fi before it starts. If you quit it, start it again:",
