@@ -8,11 +8,11 @@
 #########   ########  ###    ###  ########  #########
 ```
 
-The website of [sOnOs](https://github.com/aOnurTheDev/sOnOs), an Arch Linux-based operating system for developers and gamers.
+The website of [sOnOs](https://github.com/sOn-Os/sOnOs), an Arch Linux-based operating system for developers and gamers.
 
 **Live at <https://son-os.github.io>**
 
-The whole site is one file, `index.html`, with its CSS and JavaScript inline. There is no build step and nothing to install.
+The whole site is one file, `index.html`, with its CSS and JavaScript inline. There is no build step and nothing to install. The only other files it reads are the desktop screenshots in [`screenshots/`](screenshots/README.md).
 
 ## Viewing it locally
 
@@ -34,10 +34,11 @@ Then go to <http://localhost:8000>.
 | Every installation | What each install includes, and its size with and without the development tools |
 | Development tools | The languages installed when you answer yes to question 8 |
 | Live ISO | The rescue and development packages on the ISO, by category |
-| Installation | Download, write to USB, boot, answer the questions |
-| Build & contribute | Building the ISO with `mkarchiso`, links to both repositories |
+| Desktops | One screenshot each of KDE Plasma, GNOME, COSMIC and Hyprland |
+| Download and install | The release line, the download mirrors, the SHA256 checksum, then: write to USB, boot, answer the questions |
+| Build & contribute | Building the package repository and the ISO, links to both repositories, Discussions and the issue tracker |
 
-The content comes from the READMEs of [sOnOs](https://github.com/aOnurTheDev/sOnOs) and [sOnInstall](https://github.com/aOnurTheDev/sOnInstall). When either one changes (new desktops, new packages, new sizes), update the page to match.
+The content comes from the READMEs of [sOnOs](https://github.com/sOn-Os/sOnOs) and [sOnInstall](https://github.com/sOn-Os/sOnInstall). When either one changes (new desktops, new packages, new sizes), update the page to match.
 
 ## Languages
 
@@ -86,3 +87,13 @@ Bug reports and pull requests are welcome. Before you open a pull request, check
 ## License
 
 Distributed under the GPL-3.0 License. See [LICENSE](LICENSE).
+
+## For each release
+
+Three things on the page change with a release, all in the download section of `index.html`:
+
+1. The release line (`data-i18n="rel"`) and its English copy (`rel:` in the `EN` table of the script).
+2. The SHA256 value in the box with `id="sha256"`. Replace the placeholder text with the checksum and remove the `data-i18n` attribute from that element, so the language switch leaves it alone.
+3. The file name in the `sha256sum -c` command below it.
+
+The comments marked `TODO(sOnOs)` in that section list what is still a placeholder.

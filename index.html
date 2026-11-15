@@ -4,11 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>sOnOs</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="sOnOs: geliştiriciler ve oyuncular için Arch Linux tabanlı işletim sistemi. Dokuz soruda kurulur.">
 <meta name="theme-color" content="#0B0909">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="sOnOs">
+<meta property="og:url" content="https://son-os.github.io/">
 <meta property="og:title" content="sOnOs">
 <meta property="og:description" content="Saf Arch Linux. Dokuz soruda kurulu.">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://son-os.github.io/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230B0909'/%3E%3Cpath d='M13 6h10l-4 20H9z' fill='%23E53935'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -187,7 +193,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
   color: var(--smoke); font-size: var(--t-xs); letter-spacing: 0.04em;
 }
 .term-bar span:last-child { color: var(--red); }
-.term pre { margin: 0; padding: 1.1rem 1.2rem 1.3rem; overflow-x: auto; color: #D9D2D2; font: inherit; }
+.term pre { margin: 0; padding: 1.1rem 1.2rem 1.3rem; overflow-x: auto; color: #D9D2D2; font: inherit; scrollbar-width: thin; scrollbar-color: var(--line) var(--coal); }
 .term .r { color: var(--red); }
 .term .k { color: var(--red); }
 .term .p { color: var(--smoke); }
@@ -275,14 +281,49 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 .pkgs dd { margin: 0; display: flex; flex-wrap: wrap; gap: 0.35rem 1.1rem; font: 400 var(--t-sm)/1.5 var(--mono); font-stretch: 75%; color: var(--smoke); }
 .pkgs dd span::before { content: "▸ "; color: var(--red); }
 
+/* ---------- desktop screenshots ---------- */
+.shots { padding-block: clamp(3.5rem, 8vw, 7rem); border-top: 1px solid var(--line); }
+.shots-head { display: grid; gap: 1.25rem; margin-bottom: clamp(2rem, 4vw, 3rem); max-width: 60rem; }
+.shots h2 { font-size: var(--t-xl); }
+.gallery { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.25rem, 3vw, 2.5rem); }
+.shot { margin: 0; display: grid; gap: 0.7rem; }
+.shot-frame {
+  position: relative; aspect-ratio: 16 / 9; overflow: hidden;
+  background: var(--coal) repeating-linear-gradient(102deg, transparent 0 26px, var(--line) 26px 27px);
+  border: 1px solid var(--line);
+}
+.shot-empty {
+  position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 1rem;
+  font: 400 var(--t-xs)/1.4 var(--mono); font-stretch: 87.5%; letter-spacing: 0.08em; text-transform: uppercase; color: var(--smoke);
+}
+.shot-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* A screenshot that is not there yet leaves the frame to the placeholder */
+.shot-frame.missing img { display: none; }
+.shot figcaption { font: 400 var(--t-lg)/1.1 var(--display); transform: skewX(var(--slant)); transform-origin: 0 100%; }
+
 /* ---------- install steps ---------- */
 .install { padding-block: clamp(3.5rem, 8vw, 7rem); border-top: 1px solid var(--line); }
 .install-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1.5rem 3rem; margin-bottom: clamp(2rem, 4vw, 3.5rem); }
 .install-head > div { display: grid; gap: 1.25rem; }
 .install h2 { font-size: var(--t-2xl); }
+.download {
+  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem); margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--line);
+}
+.dl-main { display: grid; gap: 1rem; align-content: start; }
+.release { margin: 0; font: 400 var(--t-lg)/1.15 var(--display); transform: skewX(var(--slant)); transform-origin: 0 100%; }
+.reqs { margin: 0; color: var(--smoke); font: 400 var(--t-sm)/1.5 var(--mono); font-stretch: 87.5%; }
+.dl-alt { margin: 0; font-size: var(--t-sm); color: var(--smoke); }
+.dl-alt a:hover { color: var(--white); }
+.sha { display: grid; gap: 0.75rem; align-content: start; min-width: 0; }
+.sha p { margin: 0; color: var(--smoke); font-size: 0.95rem; }
+.sha .cmd { margin-top: 0; }
+.cmd.plain code::before { content: none; }
 .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 4vw, 3rem) clamp(2rem, 5vw, 4rem); }
 .steps li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.4rem 1.25rem; align-content: start; }
-.steps .n { grid-row: span 3; font: 400 clamp(2.75rem, 2rem + 2vw, 4rem)/0.9 var(--display); color: var(--red); transform: skewX(var(--slant)); min-width: 1.1ch; }
+/* The slant pushes the top of a wide digit to the right, into the heading: keep some room for it */
+.steps .n { grid-row: span 3; font: 400 clamp(2.75rem, 2rem + 2vw, 4rem)/0.9 var(--display); color: var(--red); transform: skewX(var(--slant)); min-width: 1.1ch; padding-right: 0.14em; }
 .steps h3 { margin: 0; font: 400 var(--t-lg)/1.1 var(--display); transform: skewX(var(--slant)); transform-origin: 0 100%; }
 .steps p { margin: 0; color: var(--smoke); }
 .steps p + p { margin-top: 0.25rem; }
@@ -291,7 +332,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
   display: flex; align-items: stretch; margin-top: 0.6rem;
   background: var(--coal); border: 1px solid var(--line); min-width: 0;
 }
-.cmd code { flex: 1; min-width: 0; overflow-x: auto; white-space: pre; padding: 0.8rem 1rem; font-size: 0.8rem; font-stretch: 75%; color: var(--white); }
+.cmd code { flex: 1; min-width: 0; overflow-x: auto; white-space: pre; padding: 0.8rem 1rem; font-size: 0.8rem; font-stretch: 75%; color: var(--white); scrollbar-width: thin; scrollbar-color: var(--line) var(--coal); }
 .cmd code::before { content: "$ "; color: var(--red); }
 .copy {
   flex: none; border: 0; border-left: 1px solid var(--line); background: none; color: var(--smoke);
@@ -306,6 +347,8 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 .build-col { display: grid; gap: 1rem; align-content: start; }
 .build h2 { font-size: clamp(2rem, 1.4rem + 2vw, 3rem); }
 .build p { margin: 0; color: var(--smoke); max-width: 60ch; }
+.build p a { color: var(--white); }
+.build .cmd { margin-top: 0; }
 .links { display: flex; flex-wrap: wrap; gap: 1rem 1.25rem; margin-top: 0.5rem; padding-left: 0.5rem; }
 
 /* ---------- footer ---------- */
@@ -331,14 +374,14 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 @media (max-width: 1000px) {
   .top nav { display: none; }
   .lang { margin-left: auto; }
-  .console .wrap, .inside .wrap, .dev-head, .build .wrap { grid-template-columns: minmax(0, 1fr); }
+  .console .wrap, .inside .wrap, .dev-head, .build .wrap, .download { grid-template-columns: minmax(0, 1fr); }
   .questions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .questions li::before { display: none; }
   .questions li:nth-child(even)::before { display: block; content: ""; position: absolute; top: 0; bottom: 0; left: 0; border-left: 2px solid var(--ink); transform: skewX(var(--slant)); transform-origin: 0 100%; }
   .questions li:last-child { grid-column: 1 / -1; }
 }
 @media (max-width: 760px) {
-  .hero-row { grid-template-columns: minmax(0, 1fr); }
+  .hero-row, .gallery { grid-template-columns: minmax(0, 1fr); }
   .steps { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 560px) {
@@ -366,7 +409,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
     <a href="#top" aria-label="sOnOs">
       <svg class="mark top-mark" viewBox="74 26 186 68" aria-hidden="true"><use href="#wordmark"></use></svg>
     </a>
-    <nav aria-label="Bölümler">
+    <nav aria-label="Bölümler" data-i18n-aria="a_nav">
       <a href="#sorular" data-i18n="nav1">Kurulum</a>
       <a href="#icerik" data-i18n="nav2">Neler gelir</a>
       <a href="#kurtarma" data-i18n="nav3">Canlı ISO</a>
@@ -376,7 +419,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
       <button type="button" id="lang-tr" data-lang="tr" aria-pressed="true">TR</button>
       <button type="button" id="lang-en" data-lang="en" aria-pressed="false">EN</button>
     </div>
-    <a class="btn small" href="https://github.com/aOnurTheDev/sOnOs/releases"><span data-i18n="dl">ISO'yu indir</span></a>
+    <a class="btn small" href="#indir"><span data-i18n="dl">ISO'yu indir</span></a>
   </div>
 </header>
 
@@ -406,8 +449,8 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
       <div class="hero-side">
         <p class="lede" data-i18n="lede">Geliştiriciler ve oyuncular için bir işletim sistemi. sOnOs; masaüstünü, Steam ve Vulkan ile oyun desteğini, NVIDIA sürücüsünü ve istersen eksiksiz geliştirme araçlarını kurar. Altında sade bir Arch Linux vardır, <strong>resmi depolar ve AUR ile uyumlu kalır.</strong></p>
         <div class="ctas">
-          <a class="btn" href="https://github.com/aOnurTheDev/sOnOs/releases"><span data-i18n="dl2">ISO'yu indir ↓</span></a>
-          <a class="btn ghost" href="https://github.com/aOnurTheDev/sOnOs"><span data-i18n="src">Kaynak kod</span></a>
+          <a class="btn" href="#indir"><span data-i18n="dl2">ISO'yu indir ↓</span></a>
+          <a class="btn ghost" href="https://github.com/sOn-Os/sOnOs"><span data-i18n="src">Kaynak kod</span></a>
         </div>
       </div>
     </div>
@@ -425,7 +468,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 <!-- CONSOLE -->
 <section class="console" aria-labelledby="console-h">
   <div class="wrap">
-    <div class="term" role="img" aria-label="sOnOs canlı ISO konsolu: ASCII logo, /etc/os-release ve soninstall komutu">
+    <div class="term" role="img" aria-label="sOnOs canlı ISO konsolu: ASCII logo, /etc/os-release ve soninstall komutu" data-i18n-aria="a_term">
       <div class="term-bar"><span>tty1 · root@sOnOs</span><span>soninstall</span></div>
 <pre>                  <span class="r">::::::::</span>              ::::::::
                 <span class="r">:+:    :+:</span>            :+:    :+:
@@ -441,7 +484,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 <span class="k">ID</span>=sonos
 <span class="k">ID_LIKE</span>=arch
 <span class="k">BUILD_ID</span>=rolling
-<span class="k">HOME_URL</span>="https://github.com/aOnurTheDev/sOnOs"
+<span class="k">HOME_URL</span>="https://github.com/sOn-Os/sOnOs"
 <span class="k">LOGO</span>=sonos
 
 <span class="p">root@sOnOs ~ #</span> <span class="b">soninstall</span> <span class="cursor"></span></pre>
@@ -474,13 +517,13 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
       <li><span class="n">5</span><h3 data-i18n="q5">Saat dilimi</h3><p data-i18n="q5p">Sistem saati buna göre ayarlanır.</p></li>
       <li><span class="n">6</span><h3 data-i18n="q6">Masaüstü ortamı</h3><p data-i18n="q6p">KDE Plasma, GNOME, COSMIC, Hyprland ve daha fazlası.</p></li>
       <li><span class="n">7</span><h3 data-i18n="q7">NVIDIA sürücüsü</h3><p data-i18n="q7p"><code>nvidia-open</code>, GTX 16 ve RTX 20 serisi ile sonrası için. Bilgisayarda NVIDIA kartı varsa seçili gelir.</p></li>
-      <li><span class="n">8</span><h3 data-i18n="q8">Geliştirme araçları</h3><p data-i18n="q8p">Derleyiciler, VS Code, Docker ve tüm diller. Yaklaşık 10 GB, varsayılan olarak kapalı.</p></li>
+      <li><span class="n">8</span><h3 data-i18n="q8">Geliştirme araçları</h3><p data-i18n="q8p">Derleyiciler, VS Code, Docker ile 33 dil ve araç zinciri. Yaklaşık 10 GB, varsayılan olarak kapalı.</p></li>
       <li><span class="n">9</span><h3 data-i18n="q9">Disk</h3><p data-i18n="q9p">Varsayılan bölümleme ya da kendi bölümlerin.</p></li>
     </ol>
 
     <div class="defaults">
       <p data-i18n="q_def">Sorulmayanlar hazır ayarla gelir:</p>
-      <span>NetworkManager</span><span>PipeWire</span><span>Bluetooth</span><span>zram swap</span><span>systemd-boot</span><span>hostname sOnOs</span>
+      <span>NetworkManager</span> <span>PipeWire</span> <span>Bluetooth</span> <span>zram swap</span> <span>systemd-boot</span> <span>hostname sOnOs</span>
     </div>
   </div>
 </section>
@@ -537,13 +580,62 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
     </div>
     <dl class="pkgs">
       <div><dt data-i18n="p1">Grafik</dt><dd><span>nvidia-open</span></dd></div>
-      <div><dt data-i18n="p2">Diskler ve kurtarma</dt><dd><span>clonezilla</span><span>partclone</span><span>testdisk</span><span>ddrescue</span><span>fsarchiver</span><span>smartmontools</span><span>btrfs-progs</span><span>bcachefs-tools</span><span>xfsprogs</span><span>f2fs-tools</span><span>ntfsprogs</span><span>exfatprogs</span><span>lvm2</span><span>mdadm</span></dd></div>
-      <div><dt data-i18n="p3">Ağ</dt><dd><span>iwd</span><span>networkmanager</span><span>modemmanager</span><span>openssh</span><span>openvpn</span><span>wireguard-tools</span><span>nmap</span><span>tcpdump</span></dd></div>
-      <div><dt data-i18n="p4">Sanallaştırma</dt><dd><span>docker</span><span>qemu-base</span><span>qemu-guest-agent</span><span>open-vm-tools</span><span>virtualbox-guest-utils</span><span>hyperv</span></dd></div>
-      <div><dt data-i18n="p5">Geliştirme</dt><dd><span>gcc</span><span>clang</span><span>cmake</span><span>gdb</span><span>valgrind</span><span>rust</span><span>go</span><span>python</span><span>npm</span><span>deno</span><span>jdk-openjdk</span><span>lua</span><span>git</span></dd></div>
-      <div><dt data-i18n="p6">Gömülü</dt><dd><span>arduino-cli</span><span>avr-libc</span><span>avrdude</span><span>openocd</span><span>stlink</span><span>dfu-util</span><span>minicom</span></dd></div>
-      <div><dt data-i18n="p7">Komut satırı</dt><dd><span>zsh</span><span>neovim</span><span>nano</span><span>tmux</span><span>btop</span><span>fastfetch</span><span>ripgrep</span><span>fd</span><span>jq</span><span>7zip</span></dd></div>
+      <div><dt data-i18n="p2">Diskler ve kurtarma</dt><dd><span>clonezilla</span> <span>partclone</span> <span>testdisk</span> <span>ddrescue</span> <span>fsarchiver</span> <span>smartmontools</span> <span>btrfs-progs</span> <span>bcachefs-tools</span> <span>xfsprogs</span> <span>f2fs-tools</span> <span>ntfsprogs</span> <span>exfatprogs</span> <span>lvm2</span> <span>mdadm</span></dd></div>
+      <div><dt data-i18n="p3">Ağ</dt><dd><span>iwd</span> <span>networkmanager</span> <span>modemmanager</span> <span>openssh</span> <span>openvpn</span> <span>wireguard-tools</span> <span>nmap</span> <span>tcpdump</span></dd></div>
+      <div><dt data-i18n="p4">Sanallaştırma</dt><dd><span>docker</span> <span>qemu-base</span> <span>qemu-guest-agent</span> <span>open-vm-tools</span> <span>virtualbox-guest-utils</span> <span>hyperv</span></dd></div>
+      <div><dt data-i18n="p5">Geliştirme</dt><dd><span>gcc</span> <span>clang</span> <span>cmake</span> <span>gdb</span> <span>valgrind</span> <span>rust</span> <span>go</span> <span>python</span> <span>npm</span> <span>deno</span> <span>jdk-openjdk</span> <span>lua</span> <span>git</span></dd></div>
+      <div><dt data-i18n="p6">Gömülü</dt><dd><span>arduino-cli</span> <span>avr-libc</span> <span>avrdude</span> <span>openocd</span> <span>stlink</span> <span>dfu-util</span> <span>minicom</span></dd></div>
+      <div><dt data-i18n="p7">Komut satırı</dt><dd><span>zsh</span> <span>neovim</span> <span>nano</span> <span>tmux</span> <span>btop</span> <span>fastfetch</span> <span>ripgrep</span> <span>fd</span> <span>jq</span> <span>7zip</span></dd></div>
     </dl>
+  </div>
+</section>
+
+<!-- DESKTOPS -->
+<section class="shots" id="masaustu" aria-labelledby="shots-h">
+  <div class="wrap">
+    <div class="shots-head">
+      <p class="eyebrow" data-i18n="shots_e">6. soru</p>
+      <h2 class="display" id="shots-h" data-i18n="shots_h">Masaüstünü sen seç.</h2>
+      <p class="lede" data-i18n="shots_p">Dört örnek. Kurucuda bunlardan fazlası var ve hangisini seçersen seç aynı sOnOs kurulur.</p>
+    </div>
+    <ul class="gallery">
+      <li>
+        <figure class="shot">
+          <div class="shot-frame">
+            <span class="shot-empty" data-i18n="shot_soon">Ekran görüntüsü yakında</span>
+            <img src="screenshots/kde.webp" alt="KDE Plasma masaüstünde sOnOs" data-i18n-alt="shot_kde" width="1920" height="1080" loading="lazy" decoding="async">
+          </div>
+          <figcaption>KDE Plasma</figcaption>
+        </figure>
+      </li>
+      <li>
+        <figure class="shot">
+          <div class="shot-frame">
+            <span class="shot-empty" data-i18n="shot_soon">Ekran görüntüsü yakında</span>
+            <img src="screenshots/gnome.webp" alt="GNOME masaüstünde sOnOs" data-i18n-alt="shot_gnome" width="1920" height="1080" loading="lazy" decoding="async">
+          </div>
+          <figcaption>GNOME</figcaption>
+        </figure>
+      </li>
+      <li>
+        <figure class="shot">
+          <div class="shot-frame">
+            <span class="shot-empty" data-i18n="shot_soon">Ekran görüntüsü yakında</span>
+            <img src="screenshots/cosmic.webp" alt="COSMIC masaüstünde sOnOs" data-i18n-alt="shot_cosmic" width="1920" height="1080" loading="lazy" decoding="async">
+          </div>
+          <figcaption>COSMIC</figcaption>
+        </figure>
+      </li>
+      <li>
+        <figure class="shot">
+          <div class="shot-frame">
+            <span class="shot-empty" data-i18n="shot_soon">Ekran görüntüsü yakında</span>
+            <img src="screenshots/hyprland.webp" alt="Hyprland masaüstünde sOnOs" data-i18n-alt="shot_hyprland" width="1920" height="1080" loading="lazy" decoding="async">
+          </div>
+          <figcaption>Hyprland</figcaption>
+        </figure>
+      </li>
+    </ul>
   </div>
 </section>
 
@@ -555,16 +647,35 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
         <p class="eyebrow" data-i18n="ins_e">İndir ve kur</p>
         <h2 class="display" id="ins-h" data-i18n="ins_h">Dört adım.</h2>
       </div>
-      <a class="btn" href="https://github.com/aOnurTheDev/sOnOs/releases"><span data-i18n="dl3">GitHub Releases ↗</span></a>
     </div>
+
+    <div class="download">
+      <div class="dl-main">
+        <p class="release" data-i18n="rel">sOnOs 2026.11.13 · x86_64 · 3,1 GB</p>
+        <!-- TODO(sOnOs): the minimum hardware below is a placeholder. Replace it with tested values. -->
+        <p class="reqs" data-i18n="reqs">En az: 64 bit işlemci · 4 GB RAM · 20 GB disk · UEFI veya BIOS</p>
+        <div class="ctas">
+          <!-- TODO(sOnOs): placeholder address. Replace it with the real SourceForge project once it exists. -->
+          <a class="btn" href="https://sourceforge.net/projects/sonos/files/latest/download"><span data-i18n="dl_sf">SourceForge’dan indir ↓</span></a>
+          <a class="btn ghost" href="https://drive.google.com/file/d/1EBfFsHg2rxhtojXgOF9z-vgoghwFCJsb/view"><span data-i18n="dl_gd">Alternatif: Google Drive</span></a>
+        </div>
+        <p class="dl-alt"><a href="https://github.com/sOn-Os/sOnOs/releases/latest" data-i18n="dl_gh">GitHub Releases: sürüm notları ve sağlama toplamı ↗</a></p>
+      </div>
+      <div class="sha">
+        <p class="eyebrow">SHA256</p>
+        <!-- TODO(sOnOs): paste the real checksum of sOnOs-2026.11.13-x86_64.iso here, as plain text without data-i18n. -->
+        <div class="cmd plain"><code id="sha256" data-i18n="sha_todo">TODO: sağlama toplamı henüz yayınlanmadı</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
+        <p data-i18n="sha_p">İndirdiğin dosyayı doğrula: <code>.sha256</code> dosyasını ISO ile aynı klasöre indir ve şunu çalıştır.</p>
+        <div class="cmd"><code>sha256sum -c sOnOs-2026.11.13-x86_64.iso.sha256</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
+      </div>
+    </div>
+
     <ol class="steps">
       <li>
         <span class="n">1</span>
         <h3 data-i18n="s1">ISO'yu indir</h3>
         <div>
-          <p data-i18n="s1p">En son sürümü Releases sayfasından al. GitHub 2 GiB üstü dosyaları kabul etmediği için ISO, <code>sOnOs.iso.7z.001</code>, <code>.002</code> gibi parçalara bölünmüş olabilir. Hepsini aynı klasöre indir ve ilkini aç:</p>
-          <div class="cmd"><code>7z x sOnOs.iso.7z.001</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
-          <p data-i18n="s1p2" style="margin-top:.6rem">Windows’ta ilk parçaya sağ tıklayıp 7-Zip ile çıkar.</p>
+          <p data-i18n="s1p">Yukarıdaki düğmelerden birini kullan. İndirme bitince SHA256 değerini doğrula; değer tutmuyorsa dosya bozuk inmiştir, yeniden indir.</p>
         </div>
       </li>
       <li>
@@ -596,22 +707,25 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 </section>
 
 <!-- BUILD & CONTRIBUTE -->
-<section class="build" aria-label="Kaynak">
+<section class="build" aria-label="Kaynak" data-i18n-aria="a_src">
   <div class="wrap">
     <div class="build-col">
       <p class="eyebrow">archiso</p>
       <h2 class="display" data-i18n="b_h">ISO'yu kendin derle.</h2>
-      <p data-i18n="b_p">Arch Linux ya da Arch tabanlı bir sistemde <code>archiso</code> gerekir. Önce sOnInstall deposundaki <code>packaging/local/build-repo.sh</code> ile soninstall paket deposunu oluştur, sonra <code>pacman.conf</code> içindeki <code>[sonos]</code> deposunu o klasöre yönlendir. ISO <code>out/</code> klasörüne yazılır.</p>
-      <div class="cmd"><code>sudo mkarchiso -v -w /tmp/sonos-work -o out .</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
+      <p data-i18n="b_p">Arch Linux ya da Arch tabanlı bir sistemde <code>archiso</code> gerekir. Kurucu paketi <a href="https://github.com/sOn-Os/sOnInstall">sOnInstall</a> deposundan gelir: oradaki <a href="https://github.com/sOn-Os/sOnInstall/blob/master/packaging/local/build-repo.sh"><code>packaging/local/build-repo.sh</code></a> betiği paketi derler ve yerel <code>[sonos]</code> deposunu oluşturur.</p>
+      <div class="cmd"><code>packaging/local/build-repo.sh /var/tmp/sonos-repo</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
+      <p data-i18n="b_p2">Sonra sOnOs deposunda, o depoyu kullanan <code>pacman.build.conf</code> ile ISO’yu derle. ISO <code>out/</code> klasörüne yazılır.</p>
+      <div class="cmd"><code>sudo mkarchiso -v -r -C pacman.build.conf -w /tmp/sonos-work -o out .</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
     </div>
     <div class="build-col">
       <p class="eyebrow" data-i18n="c_e">Katkı</p>
       <h2 class="display" data-i18n="k_h">Beta’dayız. Sesini duyur.</h2>
-      <p data-i18n="k_p">Hata bildirimleri, geri bildirim ve pull request’ler memnuniyetle karşılanır. Kurucu topluluk tarafından 40’tan fazla dile çevriliyor ve Türkçe çevirisi tamam. Yeni çeviriler de bekleniyor.</p>
+      <p data-i18n="k_p">Hata bildirimleri, geri bildirim ve pull request’ler memnuniyetle karşılanır. Soruların ve fikirlerin için GitHub Discussions açık. Kurucu topluluk tarafından 40’tan fazla dile çevriliyor ve Türkçe çevirisi tamam. Yeni çeviriler de bekleniyor.</p>
       <div class="links">
-        <a class="btn ghost small" href="https://github.com/aOnurTheDev/sOnOs"><span>aOnurTheDev/sOnOs ↗</span></a>
-        <a class="btn ghost small" href="https://github.com/aOnurTheDev/sOnInstall"><span>aOnurTheDev/sOnInstall ↗</span></a>
-        <a class="btn ghost small" href="https://github.com/aOnurTheDev/sOnOs/issues"><span data-i18n="issue">Hata bildir ↗</span></a>
+        <a class="btn ghost small" href="https://github.com/sOn-Os/sOnOs"><span>sOn-Os/sOnOs ↗</span></a>
+        <a class="btn ghost small" href="https://github.com/sOn-Os/sOnInstall"><span>sOn-Os/sOnInstall ↗</span></a>
+        <a class="btn ghost small" href="https://github.com/sOn-Os/sOnOs/discussions"><span data-i18n="disc">Tartışmalar ↗</span></a>
+        <a class="btn ghost small" href="https://github.com/sOn-Os/sOnOs/issues"><span data-i18n="issue">Hata bildir ↗</span></a>
       </div>
     </div>
   </div>
@@ -630,7 +744,9 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 (function () {
   var EN = {
     nav1: "Install", nav2: "What you get", nav3: "Live ISO", nav4: "Download",
-    dl: "Download ISO", dl2: "Download ISO ↓", src: "Source code", dl3: "GitHub Releases ↗",
+    a_nav: "Sections", a_src: "Source",
+    a_term: "The console of the sOnOs live ISO: the ASCII logo, /etc/os-release and the soninstall command",
+    dl: "Download ISO", dl2: "Download ISO ↓", src: "Source code",
     h1: "Plain Arch Linux.<br><em>Nine questions</em> to install.",
     lede: "An operating system for developers and gamers. sOnOs installs a desktop, gaming support with Steam and Vulkan, the NVIDIA driver and, if you want them, complete development toolchains. Underneath is a plain Arch Linux that <strong>stays compatible with the official repositories and the AUR.</strong>",
     m1: "under active development", m2: "Base", m3: "Release model", m4: "Architecture", m5: "License",
@@ -646,7 +762,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
     q5: "Time zone", q5p: "Sets the system clock.",
     q6: "Desktop environment", q6p: "KDE Plasma, GNOME, COSMIC, Hyprland and more.",
     q7: "NVIDIA driver", q7p: "<code>nvidia-open</code>, for the GTX 16 and RTX 20 series and newer. Preselected when an NVIDIA card is found.",
-    q8: "Development tools", q8p: "Compilers, VS Code, Docker and every language. About 10 GB, off by default.",
+    q8: "Development tools", q8p: "Compilers, VS Code, Docker, and 33 languages and toolchains. About 10 GB, off by default.",
     q9: "Disk", q9p: "The default layout or your own partitions.",
     q_def: "Everything else uses sensible defaults:",
     in_e: "Out of the box", in_h: "In every installation, on first boot.",
@@ -663,18 +779,29 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
     iso_p: "It is useful before you install anything. The packages for recovering a broken disk, reaching a server or flashing a board are already on the ISO:",
     p1: "Graphics", p2: "Disks & recovery", p3: "Networking", p4: "Virtualization", p5: "Development", p6: "Embedded", p7: "Command line",
     ins_e: "Download and install", ins_h: "Four steps.",
+    shots_e: "Question 6", shots_h: "You pick the desktop.",
+    shots_p: "Four examples. The installer has more, and whichever you pick, you get the same sOnOs.",
+    shot_soon: "Screenshot coming soon",
+    shot_kde: "sOnOs on the KDE Plasma desktop", shot_gnome: "sOnOs on the GNOME desktop",
+    shot_cosmic: "sOnOs on the COSMIC desktop", shot_hyprland: "sOnOs on the Hyprland desktop",
     s1: "Download the ISO",
-    s1p: "Get the latest release from the Releases page. GitHub does not accept files over 2 GiB, so the ISO may be split into parts named <code>sOnOs.iso.7z.001</code>, <code>.002</code> and so on. Download every part into the same folder and extract the first one:",
-    s1p2: "On Windows, right-click the first part and extract it with 7-Zip.",
+    s1p: "Use one of the buttons above. When the download finishes, verify the SHA256 value; if it does not match, the file is damaged, so download it again.",
+    rel: "sOnOs 2026.11.13 · x86_64 · 3.1 GB",
+    reqs: "Minimum: 64-bit CPU · 4 GB RAM · 20 GB disk · UEFI or BIOS",
+    dl_sf: "Download from SourceForge ↓", dl_gd: "Alternative: Google Drive",
+    dl_gh: "GitHub Releases: release notes and checksum ↗",
+    sha_todo: "TODO: the checksum is not published yet",
+    sha_p: "Verify the file you downloaded: put the <code>.sha256</code> file in the same folder as the ISO and run this.",
     s2: "Write it to a USB drive", s2p: "Use Ventoy, balenaEtcher or <code>dd</code>.",
     s2w: "<code>dd</code> erases everything on the target disk. Replace <code>sdX</code> with your USB drive and check it with <code>lsblk</code> first.",
     s3: "Boot from the USB", s3p: "soninstall opens by itself. Without a network cable, it offers to connect to Wi-Fi before it starts. If you quit it, start it again:",
     s4: "Answer nine questions", s4p: "Check the summary and confirm. When the machine restarts, your desktop is ready. If your NVIDIA card is older than the GTX 16 or RTX 20 series, answer “no” to question 7.",
     b_h: "Build the ISO yourself.",
-    b_p: "You need <code>archiso</code> on Arch Linux or an Arch-based system. First build the soninstall package repository with <code>packaging/local/build-repo.sh</code> from sOnInstall, then point the <code>[sonos]</code> repository in <code>pacman.conf</code> at that folder. The ISO is written to <code>out/</code>.",
+    b_p: "You need <code>archiso</code> on Arch Linux or an Arch-based system. The installer package comes from the <a href=\"https://github.com/sOn-Os/sOnInstall\">sOnInstall</a> repository: its <a href=\"https://github.com/sOn-Os/sOnInstall/blob/master/packaging/local/build-repo.sh\"><code>packaging/local/build-repo.sh</code></a> script builds the package and the local <code>[sonos]</code> repository.",
+    b_p2: "Then, in the sOnOs repository, build the ISO with <code>pacman.build.conf</code>, which uses that repository. The ISO is written to <code>out/</code>.",
     c_e: "Contribute", k_h: "We’re in beta. Tell us what breaks.",
-    k_p: "Bug reports, feedback and pull requests are welcome. The community translates the installer into more than 40 languages, and the Turkish translation is complete. New translations are welcome too.",
-    issue: "Report a bug ↗",
+    k_p: "Bug reports, feedback and pull requests are welcome. For questions and ideas, GitHub Discussions is open. The community translates the installer into more than 40 languages, and the Turkish translation is complete. New translations are welcome too.",
+    issue: "Report a bug ↗", disc: "Discussions ↗",
     copy: "Copy",
     foot: "sOnOs is developed by <a href=\"https://github.com/aOnurTheDev\">aOnurTheDev</a> and distributed under the GPL-2.0 license. soninstall is licensed under GPL-3.0. sOnOs is an independent distribution with no official affiliation with the Arch Linux project."
   };
@@ -683,6 +810,16 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
   var TR = {};
   nodes.forEach(function (n) { if (!(n.dataset.i18n in TR)) TR[n.dataset.i18n] = n.innerHTML; });
   TR.copied = "Kopyalandı"; EN.copied = "Copied";
+
+  // Labels for screen readers and image descriptions follow the language too
+  var attrNodes = [];
+  [["data-i18n-aria", "aria-label"], ["data-i18n-alt", "alt"]].forEach(function (pair) {
+    document.querySelectorAll("[" + pair[0] + "]").forEach(function (n) {
+      var key = n.getAttribute(pair[0]);
+      TR[key] = n.getAttribute(pair[1]);
+      attrNodes.push([n, pair[1], key]);
+    });
+  });
   var dict = TR;
 
   function setLang(lang) {
@@ -690,6 +827,10 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
     nodes.forEach(function (n) {
       var v = dict[n.dataset.i18n];
       if (v != null) n.innerHTML = v;
+    });
+    attrNodes.forEach(function (a) {
+      var v = dict[a[2]];
+      if (v != null) a[0].setAttribute(a[1], v);
     });
     document.documentElement.lang = lang;
     document.querySelectorAll(".lang button").forEach(function (b) {
@@ -731,6 +872,12 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
       } else { fallback(); }
     });
   });
+  document.querySelectorAll(".shot-frame img").forEach(function (img) {
+    var missing = function () { img.parentNode.classList.add("missing"); };
+    img.addEventListener("error", missing);
+    if (img.complete && img.naturalWidth === 0) missing();
+  });
+
   // Scroll motion: the wordmark drifts, the nine questions tick off like an
   // installer progress bar, the language wall fills in like a package install.
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
