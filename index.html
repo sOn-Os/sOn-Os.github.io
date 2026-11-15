@@ -651,22 +651,24 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
 
     <div class="download">
       <div class="dl-main">
-        <p class="release" data-i18n="rel">sOnOs 2026.11.13 · x86_64 · 3,1 GB</p>
+        <p class="release" data-i18n="rel">sOnOs 2026.11.15 · x86_64 · 3,1 GB</p>
         <!-- TODO(sOnOs): the minimum hardware below is a placeholder. Replace it with tested values. -->
         <p class="reqs" data-i18n="reqs">En az: 64 bit işlemci · 4 GB RAM · 20 GB disk · UEFI veya BIOS</p>
         <div class="ctas">
-          <!-- TODO(sOnOs): placeholder address. Replace it with the real SourceForge project once it exists. -->
+          <a class="btn" href="https://drive.google.com/file/d/1NfAQjr4yIfKNJW5LGCDAkT5JiJOwxMRS/view"><span data-i18n="dl_gd_main">Google Drive’dan indir ↓</span></a>
+          <!-- TODO(sOnOs): SourceForge is waiting for account verification. Once the project "sonos" exists and has the ISO,
+               make this the first button again ("SourceForge’dan indir ↓", key dl_sf) and turn Drive back into
+               <a class="btn ghost" ...><span data-i18n="dl_gd">Alternatif: Google Drive</span></a>.
           <a class="btn" href="https://sourceforge.net/projects/sonos/files/latest/download"><span data-i18n="dl_sf">SourceForge’dan indir ↓</span></a>
-          <a class="btn ghost" href="https://drive.google.com/file/d/1EBfFsHg2rxhtojXgOF9z-vgoghwFCJsb/view"><span data-i18n="dl_gd">Alternatif: Google Drive</span></a>
+          -->
         </div>
         <p class="dl-alt"><a href="https://github.com/sOn-Os/sOnOs/releases/latest" data-i18n="dl_gh">GitHub Releases: sürüm notları ve sağlama toplamı ↗</a></p>
       </div>
       <div class="sha">
         <p class="eyebrow">SHA256</p>
-        <!-- TODO(sOnOs): paste the real checksum of sOnOs-2026.11.13-x86_64.iso here, as plain text without data-i18n. -->
-        <div class="cmd plain"><code id="sha256" data-i18n="sha_todo">TODO: sağlama toplamı henüz yayınlanmadı</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
+        <div class="cmd plain"><code id="sha256">314c35a9b6b290159472f84f079c5c6684f5aca878db6d162fcf3bb23a8415fe</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
         <p data-i18n="sha_p">İndirdiğin dosyayı doğrula: <code>.sha256</code> dosyasını ISO ile aynı klasöre indir ve şunu çalıştır.</p>
-        <div class="cmd"><code>sha256sum -c sOnOs-2026.11.13-x86_64.iso.sha256</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
+        <div class="cmd"><code>sha256sum -c sOnOs-2026.11.15-x86_64.iso.sha256</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
       </div>
     </div>
 
@@ -786,11 +788,11 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
     shot_cosmic: "sOnOs on the COSMIC desktop", shot_hyprland: "sOnOs on the Hyprland desktop",
     s1: "Download the ISO",
     s1p: "Use one of the buttons above. When the download finishes, verify the SHA256 value; if it does not match, the file is damaged, so download it again.",
-    rel: "sOnOs 2026.11.13 · x86_64 · 3.1 GB",
+    rel: "sOnOs 2026.11.15 · x86_64 · 3.1 GB",
     reqs: "Minimum: 64-bit CPU · 4 GB RAM · 20 GB disk · UEFI or BIOS",
+    dl_gd_main: "Download from Google Drive ↓",
     dl_sf: "Download from SourceForge ↓", dl_gd: "Alternative: Google Drive",
     dl_gh: "GitHub Releases: release notes and checksum ↗",
-    sha_todo: "TODO: the checksum is not published yet",
     sha_p: "Verify the file you downloaded: put the <code>.sha256</code> file in the same folder as the ISO and run this.",
     s2: "Write it to a USB drive", s2p: "Use Ventoy, balenaEtcher or <code>dd</code>.",
     s2w: "<code>dd</code> erases everything on the target disk. Replace <code>sdX</code> with your USB drive and check it with <code>lsblk</code> first.",
