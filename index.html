@@ -715,7 +715,7 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
       <p data-i18n="b_p">Arch Linux ya da Arch tabanlı bir sistemde <code>archiso</code> gerekir. Kurucu paketi <a href="https://github.com/sOn-Os/sOnInstall">sOnInstall</a> deposundan gelir: oradaki <a href="https://github.com/sOn-Os/sOnInstall/blob/master/packaging/local/build-repo.sh"><code>packaging/local/build-repo.sh</code></a> betiği paketi derler ve yerel <code>[sonos]</code> deposunu oluşturur.</p>
       <div class="cmd"><code>packaging/local/build-repo.sh /var/tmp/sonos-repo</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
       <p data-i18n="b_p2">Sonra sOnOs deposunda, o depoyu kullanan <code>pacman.build.conf</code> ile ISO’yu derle. ISO <code>out/</code> klasörüne yazılır.</p>
-      <div class="cmd"><code>sudo mkarchiso -v -r -C pacman.build.conf -w /tmp/sonos-work -o out .</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
+      <div class="cmd"><code>sudo mkarchiso -v -r -C pacman.build.conf -w /var/tmp/sonos-work -o out .</code><button type="button" class="copy" data-i18n="copy">Kopyala</button></div>
     </div>
     <div class="build-col">
       <p class="eyebrow" data-i18n="c_e">Katkı</p>
