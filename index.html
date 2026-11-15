@@ -652,7 +652,9 @@ p code { color: var(--white); background: var(--coal); border: 1px solid var(--l
     <div class="download">
       <div class="dl-main">
         <p class="release" data-i18n="rel">sOnOs 2026.11.15 · x86_64 · 3,1 GB</p>
-        <!-- TODO(sOnOs): the minimum hardware below is a placeholder. Replace it with tested values. -->
+        <!-- Minimum hardware, from tests on 2026.11.15: an installation with COSMIC and the development tools
+             used 8.9 GB of disk; the installed system used 1.5 GB of RAM when idle (VM with 6.6 GB).
+             4 GB RAM is inferred from that, not yet tried as the machine's total memory. -->
         <p class="reqs" data-i18n="reqs">En az: 64 bit işlemci · 4 GB RAM · 20 GB disk · UEFI veya BIOS</p>
         <div class="ctas">
           <a class="btn" href="https://drive.google.com/file/d/1NfAQjr4yIfKNJW5LGCDAkT5JiJOwxMRS/view"><span data-i18n="dl_gd_main">Google Drive’dan indir ↓</span></a>
